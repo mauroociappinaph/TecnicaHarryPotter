@@ -1,0 +1,63 @@
+### Obtener todos los emprendedores
+GET http://localhost:4000/api/characters
+Content-Type: application/json
+
+### Obtener un emprendedor específico por ID
+
+
+### Crear un nuevo emprendedor
+POST http://localhost:4000/api/characters/create-character
+Content-Type: application/json
+
+{
+  
+}
+
+### Registrar un nuevo emprendedor (Sign Up)
+POST http://localhost:4000/api/entrepreneurs/signup
+Content-Type: application/json
+
+{
+  "email": "n@n.com",
+  "password": "123456",
+  "firstName": "Carlos",
+  "lastName": "López",
+  "businessName": "Innovación Tech"
+}
+
+### Iniciar sesión (Log In)
+POST http://localhost:4000/api/entrepreneurs/login
+Content-Type: application/json
+
+{
+  "email": "zzs@zz.com",
+  "password": "123456"
+}
+
+### Cerrar sesion
+POST http://localhost:4000/api/entrepreneurs/logout
+Content-Type: application/json
+
+
+### Actualizar un emprendedor existente
+PATCH http://localhost:4000/api/entrepreneurs/4
+Content-Type: application/json
+
+{
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "email": "jassssne.doe@example.com",
+    "businessName": "Jane's Business",
+    "products": [
+        {
+            "id": 20,
+            "name": "Updadsted Product 20",
+            "description": "Updated description for product 1",
+            "price": 150
+        }
+    ]
+}
+
+### Eliminar un emprendedor
+DELETE http://localhost:4000/api/entrepreneurs/2
+Content-Type: application/json

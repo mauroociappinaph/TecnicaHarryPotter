@@ -24,6 +24,7 @@
     "@types/express-handlebars": "^6.0.0",
     "@types/mongoose": "^5.11.97",
     "@types/morgan": "^1.9.9",
+    "axios": "^1.7.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "env": "^0.0.2",
