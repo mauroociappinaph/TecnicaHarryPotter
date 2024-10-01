@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "clean": "rimraf ./dist",
+    "dev": "ts-node src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -11,11 +15,18 @@
   "description": "",
   "devDependencies": {
     "@types/express": "^5.0.0",
+    "nodemon": "^3.1.7",
     "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.6.2"
   },
   "dependencies": {
+    "@types/express-handlebars": "^6.0.0",
+    "@types/mongoose": "^5.11.97",
+    "@types/morgan": "^1.9.9",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "env": "^0.0.2",
     "express": "^4.21.0",
     "express-handlebars": "^8.0.1",
     "mongoose": "^8.7.0",
