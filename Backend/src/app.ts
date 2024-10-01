@@ -1,6 +1,5 @@
 import express from 'express';
 import morgan from 'morgan';
-import path from 'path';
 
 
 
@@ -17,7 +16,7 @@ class Application {
 
     settings() {
         this.app.set('port', process.env.PORT || 4000);
-        this.app.set('views', path.join(__dirname, 'views'));
+
 
     }
 

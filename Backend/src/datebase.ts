@@ -9,8 +9,6 @@ async function connect(): Promise<void> {
         if (!process.env.MONGODB_PASSWORD) {
             throw new Error('MONGODB_PASSWORD is not defined');
         }
-
-
         await mongoose.connect(`mongodb+srv://harrypotter:${process.env.MONGODB_PASSWORD}@cluster0.zp2c3.mongodb.net/`);
         console.log('Database connected');
     } catch (error) {
