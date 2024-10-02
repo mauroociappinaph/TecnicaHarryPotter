@@ -3,7 +3,7 @@ GET http://localhost:4000/api/characters
 Content-Type: application/json
 
 ### Obtener un Personaje específico por ID
-GET http://localhost:4000/api/characters/66fd4df26a18917232e184f0
+GET http://localhost:4000/api/characters/66fd61c904ae3893d36dc5eb
 
 
 ### Crear un nuevo Personaje
@@ -27,17 +27,7 @@ Content-Type: application/json
   "image": "https://i.pinimg.com/originals/b4/f5/c4/b4f5c4f9d5a6a1e6e3f4e8a8e7f7e4d.jpg"
 }
 
-### Registrar un nuevo emprendedor (Sign Up)
-POST http://localhost:4000/api/entrepreneurs/signup
-Content-Type: application/json
 
-{
-  "email": "n@n.com",
-  "password": "123456",
-  "firstName": "Carlos",
-  "lastName": "López",
-  "businessName": "Innovación Tech"
-}
 
 ### Iniciar sesión (Log In)
 POST http://localhost:4000/api/entrepreneurs/login
@@ -48,9 +38,7 @@ Content-Type: application/json
   "password": "123456"
 }
 
-### Cerrar sesion
-POST http://localhost:4000/api/entrepreneurs/logout
-Content-Type: application/json
+
 
 
 ### Actualizar un emprendedor existente

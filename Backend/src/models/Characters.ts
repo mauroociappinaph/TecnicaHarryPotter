@@ -18,15 +18,15 @@ interface Character extends Document {
 const characterSchema = new Schema<Character>({
     id: { type: String, default: uuidv4 },
     name: { type: String, required: true, trim: true },
-    role: { type: String, required: true },
-    house: { type: String, required: true },
-    species: { type: String, required: true },
+    role: { type: String },
+    house: { type: String },
+    species: { type: String },
     wizard: { type: Boolean, required: true },
-    patronus: { type: String, required: true },
-    hogwartsStudent: { type: Boolean, required: true },
-    hogwartsStaff: { type: Boolean, required: true },
-    alive: { type: Boolean, required: true },
-    image: { type: String, required: true }
+    patronus: { type: String },
+    hogwartsStudent: { type: Boolean },
+    hogwartsStaff: { type: Boolean },
+    alive: { type: Boolean },
+    image: { type: String }
 });
 
 const Characters = model<Character>('Characters', characterSchema);
