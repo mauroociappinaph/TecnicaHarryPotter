@@ -1,19 +1,23 @@
 import express from 'express';
 const router = express.Router();
-import { register, login, perfil, getAllUsers, confirmar } from '../../controllers/user/userControllers';
+import { register, perfil, getAllUsers, confirmar, autenticar } from '../../controllers/user/userControllers';
+import checkAuth from '../../../middleware/authMiddleware';
 
 
-
+//? Rutas Publicas
 router
-    .get('/login', login)
     .get('/confirmar/:token', confirmar)
-    .get('/perfil', perfil)
     .get('/allusers', getAllUsers)
 
 
 router
     .post('/', register)
+    .post('/login', autenticar)
 
+
+//? Rutas Privadas
+router
+    .get('/perfil', checkAuth, perfil)
 
 
 export default router

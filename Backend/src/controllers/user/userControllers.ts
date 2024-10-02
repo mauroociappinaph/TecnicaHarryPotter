@@ -1,6 +1,8 @@
 
 import { Request, Response } from 'express';
 import User from '../../models/User'
+import { AuthenticatedRequest } from '../../../middleware/authMiddleware'
+import generarJWT from '../../../helpers/generarJWT';
 
 
 
@@ -62,13 +64,64 @@ export const confirmar = async (req: Request, res: Response): Promise<void> => {
 
 }
 
-export const login = (req: Request, res: Response): void => {
-    res.json({ msg: 'Desde User Login' });
-}
+export const autenticar = async (req: Request, res: Response): Promise<void> => {
+    const { email, password } = req.body;
 
-export const perfil = (req: Request, res: Response): void => {
-    res.json({ msg: 'Desde User Perfil' });
-}
+    try {
+        // Comprobar si el usuario existe
+        const usuario = await User.findOne({ email });
+        if (!usuario) {
+            const error = new Error("El Usuario no existe");
+            res.status(404).json({ msg: error.message });
+            return;
+        }
+
+        // Comprobar si el usuario está confirmado
+        if (!usuario.confirmado) {
+            const error = new Error("Tu Cuenta no ha sido confirmada");
+            res.status(403).json({ msg: error.message });
+            return;
+        }
+
+        // Comprobar la contraseña
+        if (await usuario.comprobarPassword(password)) {
+            res.json({
+                _id: usuario._id,
+                nombre: usuario.name,
+                email: usuario.email,
+                token: generarJWT(usuario.id),
+            });
+        } else {
+            const error = new Error("El Password es incorrecto");
+            res.status(403).json({ msg: error.message });
+            return;
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: 'Error en la autenticación' });
+    }
+};
+
+
+
+
+
+export const perfil = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    const { user } = req;
+    if (!user) {
+        const error = new Error("No se ha proporcionado un usuario");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
+    try {
+        res.json(user);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: 'Error al obtener el perfil' });
+    }
+};
+
+
 
 export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
     try {

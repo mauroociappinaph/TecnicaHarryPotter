@@ -1,29 +1,33 @@
-### Obtener todos los emprendedores
+### Obtener todos los Personajes
 GET http://localhost:4000/api/characters
 Content-Type: application/json
 
-### Obtener un emprendedor específico por ID
+### Obtener un Personaje específico por ID
+GET http://localhost:4000/api/characters/66fd62644252d0cf1374fe08
 
 
-### Crear un nuevo emprendedor
+### Crear un nuevo Personaje
 POST http://localhost:4000/api/characters/create-character
 Content-Type: application/json
 
 {
-  
+  "name": "Carlodasdsdta Wsing",
+  "role": "Mago",
+  "house": "Gryffindor",
+  "alternate_names": [
+    "Carlos",
+    "Carlosa"
+  ],
+  "species": "Hombre",
+  "wizard": true,
+  "patronus": "El poder de la magia",
+  "hogwartsStudent": true,
+  "hogwartsStaff": true,
+  "alive": true,
+  "image": "https://i.pinimg.com/originals/b4/f5/c4/b4f5c4f9d5a6a1e6e3f4e8a8e7f7e4d.jpg"
 }
 
-### Registrar un nuevo emprendedor (Sign Up)
-POST http://localhost:4000/api/entrepreneurs/signup
-Content-Type: application/json
 
-{
-  "email": "n@n.com",
-  "password": "123456",
-  "firstName": "Carlos",
-  "lastName": "López",
-  "businessName": "Innovación Tech"
-}
 
 ### Iniciar sesión (Log In)
 POST http://localhost:4000/api/entrepreneurs/login
@@ -34,9 +38,7 @@ Content-Type: application/json
   "password": "123456"
 }
 
-### Cerrar sesion
-POST http://localhost:4000/api/entrepreneurs/logout
-Content-Type: application/json
+
 
 
 ### Actualizar un emprendedor existente
