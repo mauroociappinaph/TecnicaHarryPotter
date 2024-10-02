@@ -52,8 +52,8 @@ const OlvidePassword = () => {
     <>
       <div>
         <h1 className="text-indigo-600 font-black text-6xl">
-          Recupera tu Acceso y no Pierdas {""}
-          <span className="text-black">tus Pacientes</span>
+          Recupera tu{""}
+          <span className="text-black"> Acceso </span>
         </h1>
       </div>
 
