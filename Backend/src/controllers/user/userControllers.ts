@@ -1,7 +1,7 @@
 
 import { Request, Response } from 'express';
 import User from '../../models/User'
-
+import { AuthenticatedRequest } from '../../../middleware/authMiddleware'
 import generarJWT from '../../../helpers/generarJWT';
 
 
@@ -103,9 +103,25 @@ export const autenticar = async (req: Request, res: Response): Promise<void> => 
 };
 
 
-export const perfil = (req: Request, res: Response): void => {
-    res.json({ msg: 'Desde User Perfil' });
-}
+
+
+
+export const perfil = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    const { user } = req;
+    if (!user) {
+        const error = new Error("No se ha proporcionado un usuario");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
+    try {
+        res.json(user);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: 'Error al obtener el perfil' });
+    }
+};
+
+
 
 export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
     try {

@@ -6,33 +6,39 @@ import mongoose from 'mongoose';
 
 
 
+
 const URLAPI = 'https://hp-api.onrender.com/api/characters';
 
 export const getAllCharacters = async (req: Request, res: Response): Promise<void> => {
     try {
+
+        const allCharacters = await Characters.find({});
+
+
+        if (allCharacters.length > 0) {
+            res.json(allCharacters);
+            return
+        }
+
+
         const response = await axios.get(URLAPI);
         const externalCharacters = response.data;
 
 
         for (const characterData of externalCharacters) {
-
-            const existingCharacter = await Characters.findOne({ name: characterData.name });
-            if (!existingCharacter) {
-                const character = new Characters(characterData);
-                await character.save();
-            }
+            const character = new Characters(characterData);
+            await character.save();
         }
 
 
-        const allCharacters = await Characters.find({});
-        res.json(allCharacters);
+        const savedCharacters = await Characters.find({});
+        res.json(savedCharacters);
+
     } catch (error) {
         console.error('Error al obtener y guardar los personajes:', error);
         res.status(500).json({ msg: 'Error al obtener y guardar los personajes' });
     }
 };
-
-
 
 
 

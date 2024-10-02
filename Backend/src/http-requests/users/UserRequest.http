@@ -7,8 +7,9 @@ Content-Type: application/json
 ### Perfil de usuario
 GET http://localhost:4000/api/user/perfil
 Content-Type: application/json
-### Obtener un emprendedor específico por emailGET http://localhost:4000/api/entrepreneurs/email/john.doe@example.com
-Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZmQ1ZDNiMmFkZDM2ZmQ5Y2ZhNDkyYyIsImlhdCI6MTcyNzg4ODI5NiwiZXhwIjoxNzMwNDgwMjk2fQ.Ei2XHhe1V62K4C5dTVlvcFZntygReX4W3aAvTW6U9oE
+
+
 
 ### Traer todos los usuarios
 GET http://localhost:4000/api/user/allusers
@@ -33,7 +34,7 @@ Content-Type: application/json
  "password": "123456"
 }
 
-### Registrar un nuevo emprendedor (Sign Up)
+#
 
 
 
