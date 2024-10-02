@@ -3,7 +3,7 @@ GET http://localhost:4000/api/characters
 Content-Type: application/json
 
 ### Obtener un Personaje específico por ID
-GET http://localhost:4000/api/characters/66fd62644252d0cf1374fe08
+GET http://localhost:4000/api/characters/66fd469c1afe4728068549da
 
 
 ### Crear un nuevo Personaje
@@ -29,37 +29,30 @@ Content-Type: application/json
 
 
 
-### Iniciar sesión (Log In)
-POST http://localhost:4000/api/entrepreneurs/login
+
+
+### Eliminar un personaje
+DELETE http://localhost:4000/api/characters/66fd61a059a19cc82e7ca5e7
+Content-Type: application/json
+
+
+### Actualizar un personaje existente
+PUT http://localhost:4000/api/characters/66fd4de86a18917232e184ee
 Content-Type: application/json
 
 {
-  "email": "zzs@zz.com",
-  "password": "123456"
+    "name": "Carlos Weasley",
+    "role": "Mago",
+    "house": "Gryffindor",
+    "alternate_names": [
+        "Carlos",
+        "Carlosa"
+    ],
+    "species": "Hombre",
+    "wizard": true,
+    "patronus": "El poder de la magia",
+    "hogwartsStudent": true,
+    "hogwartsStaff": true,
+    "alive": true,
+    "image": "https://i.pinimg.com/originals/b4/f5/c4/b4f5c4f9d5a6a1e6e3f4e8a8e7f7e4d.jpg"
 }
-
-
-
-
-### Actualizar un emprendedor existente
-PATCH http://localhost:4000/api/entrepreneurs/4
-Content-Type: application/json
-
-{
-    "firstName": "Jane",
-    "lastName": "Doe",
-    "email": "jassssne.doe@example.com",
-    "businessName": "Jane's Business",
-    "products": [
-        {
-            "id": 20,
-            "name": "Updadsted Product 20",
-            "description": "Updated description for product 1",
-            "price": 150
-        }
-    ]
-}
-
-### Eliminar un emprendedor
-DELETE http://localhost:4000/api/entrepreneurs/2
-Content-Type: application/json
