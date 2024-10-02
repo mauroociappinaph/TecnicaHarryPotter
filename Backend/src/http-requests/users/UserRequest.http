@@ -1,0 +1,55 @@
+
+### Registrar usuario
+GET http://localhost:4000/api/user/login
+Content-Type: application/json
+
+### Confirmar usuario con Token
+GET http://localhost:4000/api/user/confirmar/ir70cbzn9rd26avjkffhle
+Content-Type: application/json
+
+### Perfil de usuario
+GET http://localhost:4000/api/user/perfil
+Content-Type: application/json
+### Obtener un emprendedor específico por emailGET http://localhost:4000/api/entrepreneurs/email/john.doe@example.com
+Content-Type: application/json
+
+### Traer todos los usuarios
+GET http://localhost:4000/api/user/allusers
+Content-Type: application/json
+
+### Crear un nuevo Usuario
+POST  http://localhost:4000/api/user
+Content-Type: application/json
+
+{
+ "name": "Carloss",
+ "email": "cardlsoss@gmail.com",
+ "password": "123456"
+}
+
+### Registrar un nuevo emprendedor (Sign Up)
+
+
+
+### Actualizar un emprendedor existente
+PATCH http://localhost:4000/api/entrepreneurs/4
+Content-Type: application/json
+
+{
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "email": "jassssne.doe@example.com",
+    "businessName": "Jane's Business",
+    "products": [
+        {
+            "id": 20,
+            "name": "Updadsted Product 20",
+            "description": "Updated description for product 1",
+            "price": 150
+        }
+    ]
+}
+
+### Eliminar un emprendedor
+DELETE http://localhost:4000/api/entrepreneurs/2
+Content-Type: application/json
