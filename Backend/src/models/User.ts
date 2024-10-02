@@ -16,7 +16,8 @@ const UserSchema = new mongoose.Schema({
         trim: true
     },
     token: {
-        type: String
+        type: String,
+        default: Date.now()
     },
     confirmado: {
         type: Boolean,

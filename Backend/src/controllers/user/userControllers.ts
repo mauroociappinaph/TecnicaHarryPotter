@@ -43,3 +43,13 @@ export const login = (req: Request, res: Response): void => {
 export const perfil = (req: Request, res: Response): void => {
     res.json({ msg: 'Desde User Perfil' });
 }
+
+export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const response = await User.find();
+        res.json(response);
+    } catch (error) {
+        console.error('Error al obtener los usuarios:', error);
+        res.status(500).json({ msg: 'Error al obtener los usuarios' });
+    }
+};
