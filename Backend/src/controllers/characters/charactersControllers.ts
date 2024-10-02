@@ -10,6 +10,7 @@ export const getAllCharacters = async (req: Request, res: Response): Promise<voi
     } catch (error) {
         console.error('Error al obtener los personajes:', error);
         res.status(500).json({ msg: 'Error al obtener los personajes' });
+        return
     }
 };
 

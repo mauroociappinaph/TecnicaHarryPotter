@@ -1,3 +1,4 @@
+
 import { Request, Response } from 'express';
 import User from '../../models/User'
 
@@ -34,7 +35,32 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     }
 };
 
+export const confirmar = async (req: Request, res: Response): Promise<void> => {
+    const { token } = req.params;
+    console.log(req.params.token);
 
+    const usuarioConfirmado = await User.findOne({ token });
+
+    if (!usuarioConfirmado) {
+        const error = new Error('Token no valido');
+        res.status(404).json({ msg: error.message });
+        return
+
+    }
+    console.log(usuarioConfirmado);
+
+    try {
+
+        usuarioConfirmado.token = " ";
+        usuarioConfirmado.confirmado = true;
+        await usuarioConfirmado.save();
+
+        res.json({ msg: 'Usuario confirmado correctamente' });
+    } catch (error) {
+        console.log(error);
+    }
+
+}
 
 export const login = (req: Request, res: Response): void => {
     res.json({ msg: 'Desde User Login' });
