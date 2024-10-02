@@ -59,12 +59,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         if (response.data) {
           setAuth(response.data);
         }
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.error(error.message);
-        } else {
-          console.error("Error desconocido");
-        }
+      } catch (error) {
+        console.error("Error autenticando:", error);
         setAuth(null);
       } finally {
         setCargando(false);
@@ -108,12 +104,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         msg: response.data.msg,
       };
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      } else {
-        console.error("Error desconocido");
-      }
-
+      // Handle any errors
+      console.error("Error actualizando perfil:", error);
       return {
         msg: "Error al actualizar el perfil",
         error: true,
@@ -147,12 +139,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         msg: response.data.msg,
       };
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      } else {
-        console.error("Error desconocido");
-      }
-
+      // Handle any errors
+      console.error("Error guardando password:", error);
       return {
         msg: "Error al guardar el password",
         error: true,

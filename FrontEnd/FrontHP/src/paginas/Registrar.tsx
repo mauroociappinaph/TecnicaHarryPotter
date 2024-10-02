@@ -9,21 +9,17 @@ const Registrar = () => {
   const [nombre, setNombre] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [repetirPassword, setRepetirPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+
   const [alerta, setAlerta] = useState<AlertaType | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const campos = [nombre, email, password, repetirPassword];
+    const campos = [nombre, email, password, confirmPassword];
     const campoVacio = campos.find((campo) => campo === "");
     if (campoVacio) {
       setAlerta({ msg: "Hay campos vacíos", error: true });
-      return;
-    }
-
-    if (password !== repetirPassword) {
-      setAlerta({ msg: "Los Password no son iguales", error: true });
       return;
     }
 
@@ -35,11 +31,19 @@ const Registrar = () => {
       return;
     }
 
+    if (password !== confirmPassword) {
+      setAlerta({
+        msg: "Las contraseñas no coinciden",
+        error: true,
+      });
+      return;
+    }
+
     setAlerta(null);
 
     try {
       const response = await clienteAxios.post("/user", {
-        nombre,
+        name: nombre,
         email,
         password,
       });
@@ -124,14 +128,14 @@ const Registrar = () => {
 
           <div className="my-5">
             <label className="uppercase text-gray-600 block text-xl font-bold">
-              Repetir Password
+              Confirmar Password
             </label>
             <input
               type="password"
-              placeholder="Repite tu Password"
+              placeholder="Confirma tu Password"
               className="border w-full p-3 mt-3 bg-gray-50 rounded-xl"
-              value={repetirPassword}
-              onChange={(e) => setRepetirPassword(e.target.value)}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
 

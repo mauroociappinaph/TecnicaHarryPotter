@@ -2,10 +2,12 @@ import express, { Application as ExpressApp, Router } from 'express';
 import morgan from 'morgan';
 import userRoutes from '../src/routes/user/userRoutes';
 import charactersRoutes from '../src/routes/characters/charactersRoutes';
+import cors from 'cors';
 
 class Application {
     private app: ExpressApp;
     private router: Router;
+
 
     constructor() {
         this.app = express();
@@ -20,6 +22,7 @@ class Application {
     }
 
     private middlewares() {
+        this.app.use(cors());
         this.app.use(morgan('dev'));
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false }));

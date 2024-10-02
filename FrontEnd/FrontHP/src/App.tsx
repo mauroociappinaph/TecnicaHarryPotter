@@ -8,24 +8,24 @@ import CharacterId from "./paginas/CharacterId";
 import Registrar from "./paginas/Registrar";
 import ConfirmarCuenta from "./paginas/ConfirmarCuenta";
 import OlvidePassword from "./paginas/OlvidePassword";
-import { AuthProvider } from "./context/AuthProvider";
+//import { AuthProvider } from "./context/AuthProvider";
 
 function App() {
+  console.log(import.meta.env.VITE_BACKEND_URL);
+
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          <Route path="/" element={<AuthLayout />}>
-            <Route index element={<Login />} />
-            <Route path="registrar" element={<Registrar />} />
-            <Route path="confirmar/:id" element={<ConfirmarCuenta />} />
-            <Route path="olvide-password" element={<OlvidePassword />} />
-            <Route path="characters" element={<Characters />} />
-            <Route path="characters/:id" element={<CharacterId />} />
-            <Route />
-          </Route>
-        </Routes>
-      </AuthProvider>
+      <Routes>
+        <Route path="/" element={<AuthLayout />}>
+          <Route index element={<Login />} />
+          <Route path="registrar" element={<Registrar />} />
+          <Route path="confirmar/:id" element={<ConfirmarCuenta />} />
+          <Route path="olvide-password" element={<OlvidePassword />} />
+          <Route path="characters" element={<Characters />} />
+          <Route path="characters/:id" element={<CharacterId />} />
+          <Route />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }

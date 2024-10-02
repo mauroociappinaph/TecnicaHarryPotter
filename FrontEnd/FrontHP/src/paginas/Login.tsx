@@ -2,7 +2,6 @@ import { AxiosError } from "axios";
 import { useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Alerta from "../components/Alerta";
-import useAuth from "../hooks/useAuth";
 import clienteAxios from "../config/axios";
 import { AlertaType } from "../types/AlertType";
 
@@ -11,7 +10,6 @@ const Login = () => {
   const [password, setPassword] = useState<string>("");
   const [alerta, setAlerta] = useState<AlertaType | null>(null);
 
-  const { setAuth } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -31,14 +29,13 @@ const Login = () => {
         password,
       });
 
-      const { token, user } = response.data;
+      const { token } = response.data;
 
-      if (!token || !user) {
+      if (!token) {
         throw new Error("No se ha podido iniciar la sesión");
       }
 
       localStorage.setItem("token", token);
-      setAuth(user);
       navigate("/admin");
     } catch (error: unknown) {
       if (error instanceof AxiosError && error.response?.data?.msg) {
