@@ -10,10 +10,17 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZmQ1ZDNiMmFkZDM2ZmQ5Y2ZhNDkyYyIsImlhdCI6MTcyNzg4ODI5NiwiZXhwIjoxNzMwNDgwMjk2fQ.Ei2XHhe1V62K4C5dTVlvcFZntygReX4W3aAvTW6U9oE
 
 
+### Comprobar token (GET)
+GET http://localhost:4000/api/user/olvide-password/x16outl6spehtq7bga5va
+Content-Type: application/json
+
 
 ### Traer todos los usuarios
 GET http://localhost:4000/api/user/allusers
 Content-Type: application/json
+
+
+
 
 ### Crear un nuevo Usuario
 POST  http://localhost:4000/api/user
@@ -25,7 +32,7 @@ Content-Type: application/json
  "password": "123456"
 }
 
-### Registrar usuario
+### Iniciar Sesión (login)
 POST http://localhost:4000/api/user/login
 Content-Type: application/json
 
@@ -34,29 +41,21 @@ Content-Type: application/json
  "password": "123456"
 }
 
-#
+### Olvidar password
+POST http://localhost:4000/api/user/olvide-password
+Content-Type: application/json
+{
+    "email": "correo@correo.com"
+}
 
 
-
-### Actualizar un emprendedor existente
-PATCH http://localhost:4000/api/entrepreneurs/4
+### Establecer nueva contraseña (POST)
+//POST http://localhost:4000/api/user/olvide-password/{{token}}
 Content-Type: application/json
 
 {
-    "firstName": "Jane",
-    "lastName": "Doe",
-    "email": "jassssne.doe@example.com",
-    "businessName": "Jane's Business",
-    "products": [
-        {
-            "id": 20,
-            "name": "Updadsted Product 20",
-            "description": "Updated description for product 1",
-            "price": 150
-        }
-    ]
+    "password": "nuevaContraseña123"
 }
 
-### Eliminar un emprendedor
-DELETE http://localhost:4000/api/entrepreneurs/2
-Content-Type: application/json
+
+
