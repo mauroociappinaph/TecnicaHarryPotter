@@ -1,11 +1,10 @@
 import express from 'express';
 const router = express.Router();
-import { register, login, perfil, getAllUsers, confirmar } from '../../controllers/user/userControllers';
+import { register, perfil, getAllUsers, confirmar, autenticar } from '../../controllers/user/userControllers';
 
 
 
 router
-    .get('/login', login)
     .get('/confirmar/:token', confirmar)
     .get('/perfil', perfil)
     .get('/allusers', getAllUsers)
@@ -13,6 +12,7 @@ router
 
 router
     .post('/', register)
+    .post('/login', autenticar)
 
 
 
