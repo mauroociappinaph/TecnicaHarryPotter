@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Alerta from "../components/Alerta";
 import clienteAxios from "../config/axios";
 import { AlertaType } from "../types/AlertType";
+//import useAuth from "../hooks/useAuth";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -12,18 +13,23 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  console.log("Login component rendered");
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("handleSubmit called");
 
     if (!email || !password) {
       setAlerta({
         msg: "Todos los campos son obligatorios",
         error: true,
       });
+      console.log("returning because of empty fields");
       return;
     }
 
     try {
+      console.log("making request to /user/login");
       const response = await clienteAxios.post("/user/login", {
         email,
         password,
@@ -35,8 +41,10 @@ const Login = () => {
         throw new Error("No se ha podido iniciar la sesión");
       }
 
+      console.log("setting token in local storage");
       localStorage.setItem("token", token);
-      navigate("/characters");
+
+      navigate("/admin");
     } catch (error: unknown) {
       if (error instanceof AxiosError && error.response?.data?.msg) {
         setAlerta({

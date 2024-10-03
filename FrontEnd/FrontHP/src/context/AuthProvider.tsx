@@ -1,40 +1,13 @@
-import { useState, useEffect, createContext, ReactNode } from "react";
+import { useState, useEffect, createContext } from "react";
 import clienteAxios from "../config/axios";
+import {
+  AuthContextProps,
+  AuthProps,
+  AuthProviderProps,
+  PasswordProps,
+} from "../types/AuthProvider";
 
-// Definir tipos para el contexto
-interface AuthContextProps {
-  auth: AuthProps | null;
-  setAuth: (auth: AuthProps | null) => void;
-  cargando: boolean;
-  cerrarSesion: () => void;
-  actualizarPerfil: (
-    datos: AuthProps
-  ) => Promise<{ msg: string; error?: boolean }>;
-  guardarPassword: (
-    datos: PasswordProps
-  ) => Promise<{ msg: string; error?: boolean }>;
-}
-
-// Definir el tipo de los datos de autenticación
-interface AuthProps {
-  _id: string;
-  nombre: string;
-  email: string;
-  [key: string]: unknown;
-}
-
-// Definir el tipo de los datos de la contraseña
-interface PasswordProps {
-  password_actual: string;
-  password_nuevo: string;
-}
-
-// Crear el contexto con un valor inicial
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
-
-interface AuthProviderProps {
-  children: ReactNode;
-}
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [cargando, setCargando] = useState(true);
