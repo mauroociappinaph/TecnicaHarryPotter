@@ -10,19 +10,14 @@ import {
 } from "./ui/card";
 import Paginador from "../components/Paginador";
 import { Button } from "./ui/button";
-
-interface Character {
-  _id: string;
-  name: string;
-  image: string;
-  house: string;
-}
+import { Link } from "react-router-dom";
+import { Character } from "../types/Character";
 
 export default function Cards() {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1); // Página actual
-  const [itemsPerPage] = useState(6); // Cantidad de personajes por página
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(6);
 
   useEffect(() => {
     const fetchCharacters = async () => {
@@ -96,9 +91,11 @@ export default function Cards() {
                 </p>
               </div>
             </CardContent>
-            <Button className="w-1/2 mx-auto flex justify-center rounded-xl bg-indigo-700 py-3 px-5 text-white font-bold hover:bg-indigo-800 transition-colors duration-300 my-2">
-              Ver Información
-            </Button>
+            <Link to={`/characters/${character._id}`}>
+              <Button className="w-1/2 mx-auto flex justify-center rounded-xl bg-indigo-700 py-3 px-5 text-white font-bold hover:bg-indigo-800 transition-colors duration-300 my-2">
+                Ver Información
+              </Button>
+            </Link>
             <CardFooter className="bg-gray-100 p-4 text-center rounded-b-xl">
               <CardDescription className="text-sm text-gray-500">
                 Este personaje es parte del universo de Harry Potter.

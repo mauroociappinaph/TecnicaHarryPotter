@@ -1,7 +1,8 @@
+import CardId from "../components/CardId";
 const CharacterId = () => {
   return (
     <div>
-      <h1>Character</h1>
+      <CardId />
     </div>
   );
 };
