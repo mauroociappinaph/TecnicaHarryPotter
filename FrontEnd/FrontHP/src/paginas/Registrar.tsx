@@ -10,19 +10,18 @@ const Registrar = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-
   const [alerta, setAlerta] = useState<AlertaType | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const campos = [nombre, email, password, confirmPassword];
-    const campoVacio = campos.find((campo) => campo === "");
-    if (campoVacio) {
+    // Verificar campos vacíos
+    if (!nombre || !email || !password || !confirmPassword) {
       setAlerta({ msg: "Hay campos vacíos", error: true });
       return;
     }
 
+    // Verificar la longitud de la contraseña
     if (password.length < 6) {
       setAlerta({
         msg: "El Password es muy corto, agrega mínimo 6 caracteres",
@@ -31,6 +30,7 @@ const Registrar = () => {
       return;
     }
 
+    // Verificar que las contraseñas coincidan
     if (password !== confirmPassword) {
       setAlerta({
         msg: "Las contraseñas no coinciden",
@@ -39,7 +39,7 @@ const Registrar = () => {
       return;
     }
 
-    setAlerta(null);
+    setAlerta(null); // Limpiar la alerta antes de intentar el registro
 
     try {
       const response = await clienteAxios.post("/user", {
@@ -47,26 +47,28 @@ const Registrar = () => {
         email,
         password,
       });
-      if (response.status !== 201) {
-        setAlerta({
-          msg: response.data?.msg || "Error al crear el usuario",
-          error: true,
-        });
-        return;
-      }
 
-      setAlerta({
-        msg: "Creado Correctamente, revisa tu email",
-        error: false,
-      });
-    } catch (error: unknown) {
+      console.log("Registrar: response:", response);
+
+      // Manejar respuestas exitosas
+      if (response.status >= 200 && response.status < 300) {
+        setAlerta({
+          msg: "Cuenta creada correctamente, revisa tu email",
+          error: false, // Este debería ser false para un mensaje exitoso
+        });
+      } else {
+        throw new Error(response.data?.msg || "Error al crear el usuario");
+      }
+    } catch (error) {
+      console.error("Registrar: error:", error);
+
       if (error instanceof AxiosError && error.response) {
         setAlerta({
           msg: error.response.data?.msg || "Error al crear el usuario",
           error: true,
         });
-      } else {
-        console.error("Error desconocido");
+      } else if (error instanceof Error) {
+        console.error("Error desconocido", error);
         setAlerta({
           msg: "Ha ocurrido un error desconocido, inténtelo de nuevo",
           error: true,
@@ -138,7 +140,6 @@ const Registrar = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
-
           <input
             type="submit"
             value="Crear Cuenta"
