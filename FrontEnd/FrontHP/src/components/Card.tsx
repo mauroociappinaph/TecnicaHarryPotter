@@ -12,9 +12,12 @@ import Paginador from "../components/Paginador";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
 import { Character } from "../types/Character";
+import { Search } from "../components/Search";
+import Spinner from "../components/ui/spinner";
 
 export default function Cards() {
   const [characters, setCharacters] = useState<Character[]>([]);
+  const [filteredCharacters, setFilteredCharacters] = useState<Character[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(6);
@@ -24,6 +27,7 @@ export default function Cards() {
       try {
         const response = await clienteAxios.get("/characters");
         setCharacters(response.data);
+        setFilteredCharacters(response.data); // Inicializa los personajes filtrados
       } catch (error) {
         console.error("Error al obtener los personajes:", error);
       } finally {
@@ -37,7 +41,7 @@ export default function Cards() {
   // Lógica para paginar personajes
   const indexOfLastCharacter = currentPage * itemsPerPage;
   const indexOfFirstCharacter = indexOfLastCharacter - itemsPerPage;
-  const currentCharacters = characters.slice(
+  const currentCharacters = filteredCharacters.slice(
     indexOfFirstCharacter,
     indexOfLastCharacter
   );
@@ -47,7 +51,7 @@ export default function Cards() {
   if (loading) {
     return (
       <div className="text-center text-lg font-semibold">
-        Cargando personajes...
+        <Spinner />
       </div>
     );
   }
@@ -57,6 +61,10 @@ export default function Cards() {
       <h1 className="text-3xl font-bold text-indigo-700 text-center">
         Personajes
       </h1>
+      <Search
+        characters={characters}
+        setFilteredCharacters={setFilteredCharacters}
+      />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4">
         {currentCharacters.map((character) => (
           <Card
@@ -78,9 +86,7 @@ export default function Cards() {
               </div>
               <div className="mt-4 text-left space-y-4">
                 <p className="text-lg">
-                  <span className="font-semibold text-indigo-700 text-center">
-                    Casa:
-                  </span>
+                  <span className="font-semibold text-indigo-700">Casa:</span>
                   <span
                     className={`ml-2 text-lg font-medium ${
                       character.house ? "text-black" : "text-gray-500"
@@ -108,7 +114,7 @@ export default function Cards() {
       {/* Componente Paginador */}
       <Paginador
         itemsPerPage={itemsPerPage}
-        totalItems={characters.length}
+        totalItems={filteredCharacters.length} // Usar los personajes filtrados
         paginate={paginate}
         currentPage={currentPage}
       />
