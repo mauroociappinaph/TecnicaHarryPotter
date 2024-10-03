@@ -91,7 +91,7 @@ export default function Cards() {
                 </p>
               </div>
             </CardContent>
-            <Link to={`/characters/${character._id}`}>
+            <Link to={`/admin/characters/${character._id}`}>
               <Button className="w-1/2 mx-auto flex justify-center rounded-xl bg-indigo-700 py-3 px-5 text-white font-bold hover:bg-indigo-800 transition-colors duration-300 my-2">
                 Ver Información
               </Button>

@@ -24,15 +24,14 @@ function App() {
             <Route path="confirmar/:id" element={<ConfirmarCuenta />} />
             <Route path="olvide-password" element={<OlvidePassword />} />
             <Route path="olvide-password/:token" element={<NuevoPassword />} />
-            <Route path="characters/:id" element={<CharacterId />} />
-
-            <Route />
           </Route>
 
           <Route path="/admin" element={<RutaProtegida />}>
             <Route index element={<AdministrarCharacters />} />
             <Route path="charactersAdmin" element={<AdministrarCharacters />} />
             <Route path="characters" element={<Characters />} />
+            <Route path="characters/:id" element={<CharacterId />} />{" "}
+            {/* Asegúrate de que esta ruta esté aquí */}
           </Route>
         </Routes>
       </AuthProvider>
