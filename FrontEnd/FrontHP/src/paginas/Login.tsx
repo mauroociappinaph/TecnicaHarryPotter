@@ -36,7 +36,7 @@ const Login = () => {
       }
 
       localStorage.setItem("token", token);
-      navigate("/admin");
+      navigate("/characters");
     } catch (error: unknown) {
       if (error instanceof AxiosError && error.response?.data?.msg) {
         setAlerta({

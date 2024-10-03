@@ -13,17 +13,9 @@ const NuevoPassword = () => {
   const [passwordModificado, setPasswordModificado] = useState<boolean>(false);
 
   const params = useParams<{ token: string }>();
-  const { token } = params ?? {};
+  const { token } = params;
 
   useEffect(() => {
-    if (!token) {
-      setAlerta({
-        msg: "No hay token",
-        error: true,
-      });
-      return;
-    }
-
     const comprobarToken = async () => {
       if (!token) {
         setAlerta({
@@ -37,6 +29,7 @@ const NuevoPassword = () => {
         const response = await clienteAxios.get<ResponseType>(
           `/user/olvide-password/${token}`
         );
+
         if (!response.data) {
           throw new Error("No se ha podido verificar el token");
         }
@@ -62,12 +55,12 @@ const NuevoPassword = () => {
     };
 
     comprobarToken();
-  }, [token]); // Añadido 'token' como dependencia
+  }, [token]); // Dependencia del useEffect
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (password == null || password.length < 6) {
+    if (!password || password.length < 6) {
       setAlerta({
         msg: "El Password debe ser mínimo de 6 caracteres",
         error: true,
@@ -76,11 +69,7 @@ const NuevoPassword = () => {
     }
 
     try {
-      const url = `/veterinarios/olvide-password/${token}`;
-      if (token == null) {
-        throw new Error("No se ha proporcionado el token");
-      }
-
+      const url = `/user/olvide-password/${token}`;
       const { data } = await clienteAxios.post<ResponseType>(url, { password });
       if (!data) {
         throw new Error("No se ha podido guardar el password");
@@ -112,8 +101,8 @@ const NuevoPassword = () => {
     <>
       <div>
         <h1 className="text-indigo-600 font-black text-6xl">
-          Reestablece tu password y no Pierdas Acceso a {""}
-          <span className="text-black">tus Pacientes</span>
+          Restablece tu password {""}
+          <span className="text-black">y no Pierdas Acceso</span>
         </h1>
       </div>
 
@@ -121,27 +110,25 @@ const NuevoPassword = () => {
         {msg && <Alerta alerta={alerta} />}
 
         {tokenValido && (
-          <>
-            <form onSubmit={handleSubmit}>
-              <div className="my-5">
-                <label className="uppercase text-gray-600 block text-xl font-bold">
-                  Nuevo Password
-                </label>
-                <input
-                  type="password"
-                  placeholder="Tu Nuevo Password"
-                  className="border w-full p-3 mt-3 bg-gray-50 rounded-xl"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
+          <form onSubmit={handleSubmit}>
+            <div className="my-5">
+              <label className="uppercase text-gray-600 block text-xl font-bold">
+                Nuevo Password
+              </label>
               <input
-                type="submit"
-                value="Guardar Nuevo Password"
-                className="bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold mt-5 hover:cursor-pointer hover:bg-indigo-800 md:w-auto"
+                type="password"
+                placeholder="Tu Nuevo Password"
+                className="border w-full p-3 mt-3 bg-gray-50 rounded-xl"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
-            </form>
-          </>
+            </div>
+            <input
+              type="submit"
+              value="Guardar Nuevo Password"
+              className="bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold mt-5 hover:cursor-pointer hover:bg-indigo-800 md:w-auto"
+            />
+          </form>
         )}
 
         {passwordModificado && (

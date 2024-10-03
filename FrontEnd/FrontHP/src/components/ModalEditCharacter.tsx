@@ -47,9 +47,11 @@ export function ModalEditCharacter({
 }: ModalEditCharacterProps) {
   const { id } = useParams();
   const [formData, setFormData] = useState<Character>(character);
-  const [isOpen, setIsOpen] = useState(false); // Controla si el modal está abierto o cerrado
+  const [isOpen, setIsOpen] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageUploading, setImageUploading] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-  // Manejo de cambios para inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -72,23 +74,67 @@ export function ModalEditCharacter({
     });
   };
 
-  const handlerEdit = async () => {
+  const handleAliveChange = (value: string) => {
+    setFormData({
+      ...formData,
+      alive: value === "true",
+    });
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
+
+  const uploadImageToCloudinary = async () => {
+    if (!imageFile) return;
+    setImageUploading(true);
+
+    const formData = new FormData();
+    formData.append("file", imageFile);
+    formData.append("upload_preset", "harrypotter");
+
     try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/dj8g1egez/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      return data.secure_url; // Devolver la URL de la imagen
+    } catch (error) {
+      console.error("Error al subir la imagen:", error);
+      return null;
+    } finally {
+      setImageUploading(false);
+    }
+  };
+  const handlerEdit = async () => {
+    let imageUrl: string | null = null;
+    if (imageFile) {
+      imageUrl = await uploadImageToCloudinary();
+    }
+
+    try {
+      if (imageUrl) {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          image: imageUrl,
+        }));
+      }
+
       const response = await clienteAxios.put(`/characters/${id}`, formData);
-      onUpdateCharacter(response.data); // Actualizamos el personaje en el componente padre
-      setIsOpen(false); // Cerrar el modal después de guardar los cambios
+      onUpdateCharacter(response.data);
+      setIsOpen(false);
     } catch (error) {
       console.error("Error al actualizar el personaje:", error);
     }
   };
-
-  const handleAliveChange = (value: string) => {
-    setFormData({
-      ...formData,
-      alive: value === "true", // Convertimos el string a booleano
-    });
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -229,6 +275,31 @@ export function ModalEditCharacter({
             className="col-span-3"
           />
         </div>
+        {/* Input para imagen */}
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="image" className="text-right">
+            Imagen
+          </Label>
+          <Input
+            id="image"
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="col-span-3"
+          />
+          {previewImage && (
+            <div className="col-span-4">
+              <p className="text-center">Previsualización:</p>
+              <img
+                src={previewImage}
+                alt="Preview"
+                className="mx-auto mt-2"
+                style={{ width: "150px", height: "150px", objectFit: "cover" }}
+              />
+            </div>
+          )}
+        </div>
+        {imageUploading && <p className="text-center">Subiendo imagen...</p>}
         <DialogFooter>
           <Button
             className="bg-indigo-600 text-white px-6 py-3 rounded-full hover:bg-indigo-700 transition-transform transform hover:scale-105 shadow-lg"

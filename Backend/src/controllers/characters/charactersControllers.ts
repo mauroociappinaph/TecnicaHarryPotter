@@ -142,33 +142,43 @@ export const deleteCharacter = async (req: Request, res: Response): Promise<void
     }
 };
 
+
+
 export const updateCharacter = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-    const { name, role, house, species, wizard, patronus, hogwartsStudent, hogwartsStaff, alive, image } = req.body;
+
     if (!id) {
         res.status(400).json({ msg: 'El id del personaje es obligatorio' });
         return;
     }
+
     try {
         const character = await Characters.findById(id);
         if (!character) {
             res.status(404).json({ msg: 'Personaje no encontrado' });
             return;
         }
-        character.name = name;
-        character.role = role;
-        character.house = house;
-        character.species = species;
-        character.wizard = wizard;
-        character.patronus = patronus;
-        character.hogwartsStudent = hogwartsStudent;
-        character.hogwartsStaff = hogwartsStaff;
-        character.alive = alive;
-        character.image = image;
-        await character.save();
-        res.json(character);
+
+        // Actualiza solo los campos que se han proporcionado en la solicitud
+        character.name = req.body.name || character.name;
+        character.role = req.body.role || character.role;
+        character.house = req.body.house || character.house;
+        character.species = req.body.species || character.species;
+        character.wizard = req.body.wizard !== undefined ? req.body.wizard : character.wizard; // Verificamos si se proporciona
+        character.patronus = req.body.patronus || character.patronus;
+        character.hogwartsStudent = req.body.hogwartsStudent !== undefined ? req.body.hogwartsStudent : character.hogwartsStudent; // Verificamos si se proporciona
+        character.hogwartsStaff = req.body.hogwartsStaff !== undefined ? req.body.hogwartsStaff : character.hogwartsStaff; // Verificamos si se proporciona
+        character.alive = req.body.alive !== undefined ? req.body.alive : character.alive; // Verificamos si se proporciona
+
+        // Reemplaza la URL de la imagen con la nueva URL de Cloudinary
+        if (req.body.image) {
+            character.image = req.body.image; // Actualizamos la imagen con la nueva URL
+        }
+
+        await character.save(); // Guarda los cambios en la base de datos
+        res.json(character); // Retorna el personaje actualizado
     } catch (error) {
         console.error('Error al actualizar el personaje:', error);
         res.status(500).json({ msg: 'Error al actualizar el personaje' });
     }
-}
+};

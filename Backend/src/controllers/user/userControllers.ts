@@ -3,6 +3,9 @@ import { Request, Response } from 'express';
 import User from '../../models/User'
 import { AuthenticatedRequest } from '../../../middleware/authMiddleware'
 import generarJWT from '../../../helpers/generarJWT';
+import emailRegistro from '../../../helpers/emailRegistro';
+import emailOlvidePassword from '../../../helpers/emailOlvidePassword';
+
 
 
 
@@ -17,18 +20,30 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     }
 
     try {
-        const existingUser = await User.findOne({ email: userEmail }, 'name email password').exec();
+        const existingUser = await User.findOne({ email: userEmail }).exec();
 
         if (existingUser) {
             res.status(400).json({
                 msg: 'El usuario ya existe. Por favor, introduce otro email.',
             });
-            return; // Aquí también puedes usar return sin valor
+            return;
         }
 
-        const newUser = new User({ name: userName, email: userEmail, password: userPassword });
+        const token = generarJWT(userEmail); // Generar el token
+        const newUser = new User({ name: userName, email: userEmail, password: userPassword, token });
 
-        await newUser.save();
+        const UserGuardado = await newUser.save();
+
+        if (!UserGuardado) {
+            throw new Error('Error al guardar el usuario');
+        }
+
+
+        await emailRegistro({
+            email: userEmail,
+            nombre: userName,
+            token: UserGuardado.token || ''
+        });
 
         res.json({ msg: 'Usuario registrado correctamente' });
     } catch (error) {
@@ -39,30 +54,35 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
 export const confirmar = async (req: Request, res: Response): Promise<void> => {
     const { token } = req.params;
-    console.log(req.params.token);
-
-    const usuarioConfirmado = await User.findOne({ token });
-
-    if (!usuarioConfirmado) {
-        const error = new Error('Token no valido');
-        res.status(404).json({ msg: error.message });
-        return
-
-    }
-    console.log(usuarioConfirmado);
 
     try {
+        const usuarioConfirmado = await User.findOne({ token });
 
-        usuarioConfirmado.token = " ";
-        usuarioConfirmado.confirmado = true;
-        await usuarioConfirmado.save();
+        if (!usuarioConfirmado) {
+            res.status(400).json({ msg: 'Token no válido' });
+            return;
+        }
+
+        if (!usuarioConfirmado.token) {
+            throw new Error('El usuario ya ha sido confirmado anteriormente.');
+        }
+
+        usuarioConfirmado.token = ''; // Invalidar el token
+        usuarioConfirmado.confirmado = true; // Marcar como confirmado
+
+        await usuarioConfirmado.save(); // Guardar los cambios
 
         res.json({ msg: 'Usuario confirmado correctamente' });
     } catch (error) {
-        console.log(error);
+        if (error instanceof Error) {
+            console.error("Error al confirmar el usuario: ", error.message);
+            res.status(400).json({ msg: error.message });
+        } else {
+            console.error("Error desconocido al confirmar el usuario: ", error);
+            res.status(500).json({ msg: 'Error al confirmar el usuario.' });
+        }
     }
-
-}
+};
 
 export const autenticar = async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;
@@ -135,6 +155,13 @@ export const olvidePassword = async (req: Request, res: Response): Promise<void>
         }
         user.token = generarJWT(user.id);
         await user.save();
+
+
+        emailOlvidePassword({ email, nombre: user.name, token: user.token });
+
+
+
+
         res.json({ msg: 'Hemos enviado un email con las instrucciones' });
     } catch (error) {
         console.error(error);
