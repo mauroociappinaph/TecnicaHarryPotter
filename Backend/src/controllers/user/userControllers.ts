@@ -8,6 +8,11 @@ import emailOlvidePassword from '../../../helpers/emailOlvidePassword';
 
 
 
+interface CustomRequest extends Request {
+    user?: {
+        id: string; // O el tipo que tengas para el id
+    };
+}
 
 export const register = async (req: Request, res: Response): Promise<void> => {
     const { name: userName, email: userEmail, password: userPassword } = req.body;
@@ -227,5 +232,107 @@ export const getAllUsers = async (req: Request, res: Response): Promise<void> =>
     } catch (error) {
         console.error('Error al obtener los usuarios:', error);
         res.status(500).json({ msg: 'Error al obtener los usuarios' });
+    }
+};
+
+
+
+
+
+export const actualizarPerfil = async (req: Request, res: Response): Promise<void> => {
+    const id = req.params.id;
+
+    if (!id) {
+        const error = new Error("No se ha proporcionado el id del usuario");
+        res.status(400).json({ msg: error.message });
+        return
+    }
+
+    const user = await User.findById(id);
+    if (!user) {
+        const error = new Error("Hubo un error");
+        res.status(400).json({ msg: error.message });
+        return
+    }
+
+    const { email } = req.body;
+    if (user.email !== req.body.email) {
+        const existeEmail = await User.findOne({ email });
+
+        if (existeEmail) {
+            const error = new Error("Ese email ya esta en uso");
+            res.status(400).json({ msg: error.message });
+            return
+        }
+    }
+
+    try {
+        user.name = req.body.nombre;
+        user.email = req.body.email;
+
+        const useroActualizado = await user.save();
+        res.json(useroActualizado);
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.log(error);
+            res.status(500).json({ msg: error.message });
+        } else {
+            console.log("Error desconocido al actualizar el perfil");
+            res.status(500).json({ msg: 'Error al actualizar el perfil' });
+        }
+    }
+};
+
+export const actualizarPassword = async (req: CustomRequest, res: Response): Promise<void> => {
+    const { id } = req.user || {}; // Manejar el caso si user es undefined
+    const { pwd_actual, pwd_nuevo } = req.body;
+
+    // Comprobar que el usuario existe
+    const usuario = await User.findById(id).exec();
+    if (!usuario) {
+        const error = new Error("Hubo un error");
+        res.status(400).json({ msg: error.message });
+        return
+    }
+
+    try {
+        if (!pwd_actual) {
+            const error = new Error("El Password Actual es Obligatorio");
+            res.status(400).json({ msg: error.message });
+            return
+        }
+
+        if (!pwd_nuevo) {
+            const error = new Error("El Password Nuevo es Obligatorio");
+            res.status(400).json({ msg: error.message });
+            return
+        }
+
+        if (pwd_nuevo.length < 6) {
+            const error = new Error("El Password Nuevo debe tener al menos 6 caracteres");
+            res.status(400).json({ msg: error.message });
+            return
+        }
+
+        if (await usuario.comprobarPassword(pwd_actual)) {
+            usuario.password = pwd_nuevo;
+            await usuario.save();
+            res.json({ msg: "Password Almacenado Correctamente" });
+            return
+        } else {
+            const error = new Error("El Password Actual es Incorrecto");
+            res.status(400).json({ msg: error.message });
+            return
+        }
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.log(error);
+            res.status(500).json({ msg: error.message });
+            return
+        } else {
+            console.log("Error desconocido al actualizar el password");
+            res.status(500).json({ msg: 'Error al actualizar el password' });
+            return
+        }
     }
 };

@@ -12,6 +12,8 @@ import OlvidePassword from "./paginas/OlvidePassword";
 import NuevoPassword from "./paginas/NuevoPassword";
 import AdministrarCharacters from "./paginas/AdministrarCharacters";
 import { AuthProvider } from "./context/AuthProvider";
+import EditarPerfil from "./paginas/EditarPerfil";
+import CambiarPassword from "./paginas/CambiarPassword";
 
 function App() {
   return (
@@ -30,8 +32,9 @@ function App() {
             <Route index element={<AdministrarCharacters />} />
             <Route path="charactersAdmin" element={<AdministrarCharacters />} />
             <Route path="characters" element={<Characters />} />
-            <Route path="characters/:id" element={<CharacterId />} />{" "}
-            {/* Asegúrate de que esta ruta esté aquí */}
+            <Route path="characters/:id" element={<CharacterId />} />
+            <Route path="perfil" element={<EditarPerfil />} />
+            <Route path="cambiar-password" element={<CambiarPassword />} />
           </Route>
         </Routes>
       </AuthProvider>

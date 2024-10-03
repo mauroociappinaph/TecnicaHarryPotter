@@ -69,7 +69,6 @@ export default function CardId() {
     }
   };
 
-  // Función para actualizar los datos del personaje en la interfaz
   const handleUpdateCharacter = (updatedCharacter: Character) => {
     setCharacter(updatedCharacter);
   };
@@ -259,7 +258,6 @@ export default function CardId() {
       </CardContent>
 
       <CardFooter className="bg-indigo-50 p-6 flex justify-center space-x-4">
-        {/* Pasamos el personaje actual al modal y la función de actualización */}
         <ModalEditCharacter
           character={character}
           onUpdateCharacter={handleUpdateCharacter}
