@@ -1,5 +1,6 @@
+import Cards from "../components/Card";
 const Characters = () => {
-  return <div>Characters</div>;
+  return <Cards />;
 };
 
 export default Characters;
