@@ -4,12 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import Alerta from "../components/Alerta";
 import clienteAxios from "../config/axios";
 import { AlertaType } from "../types/AlertType";
-//import useAuth from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [alerta, setAlerta] = useState<AlertaType | null>(null);
+
+  const { setAuth } = useAuth();
 
   const navigate = useNavigate();
 
@@ -35,22 +37,34 @@ const Login = () => {
         password,
       });
 
-      const { token } = response.data;
+      const { data } = response;
+      if (!data) {
+        throw new Error("No se ha podido iniciar la sesión");
+      }
 
+      const { token } = data;
       if (!token) {
         throw new Error("No se ha podido iniciar la sesión");
       }
 
       console.log("setting token in local storage");
       localStorage.setItem("token", token);
-
+      console.log(data);
+      setAuth(data);
       navigate("/admin");
     } catch (error: unknown) {
-      if (error instanceof AxiosError && error.response?.data?.msg) {
-        setAlerta({
-          msg: error.response.data.msg,
-          error: true,
-        });
+      if (error instanceof AxiosError) {
+        if (error.response?.data?.msg) {
+          setAlerta({
+            msg: error.response.data.msg,
+            error: true,
+          });
+        } else {
+          setAlerta({
+            msg: "Ha ocurrido un error, inténtelo de nuevo",
+            error: true,
+          });
+        }
       } else if (error instanceof Error) {
         setAlerta({
           msg: error.message || "Ha ocurrido un error, inténtelo de nuevo",

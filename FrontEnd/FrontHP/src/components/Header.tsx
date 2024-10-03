@@ -12,6 +12,9 @@ const Header: React.FC = () => {
         </h1>
 
         <nav className="flex flex-col items-center lg:flex-row gap-4 mt-5 lg:mt-0">
+          <Link to="/admin" className="text-white text-sm uppercase font-bold">
+            Inicio
+          </Link>
           <Link
             to="/admin/characters"
             className="text-white text-sm uppercase font-bold"

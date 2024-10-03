@@ -105,6 +105,7 @@ export const autenticar = async (req: Request, res: Response): Promise<void> => 
 
         // Comprobar la contraseña
         if (await usuario.comprobarPassword(password)) {
+
             res.json({
                 _id: usuario._id,
                 nombre: usuario.name,
