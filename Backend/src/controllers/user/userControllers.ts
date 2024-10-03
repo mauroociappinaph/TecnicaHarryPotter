@@ -4,7 +4,7 @@ import User from '../../models/User'
 import { AuthenticatedRequest } from '../../../middleware/authMiddleware'
 import generarJWT from '../../../helpers/generarJWT';
 import emailRegistro from '../../../helpers/emailRegistro';
-
+import emailOlvidePassword from '../../../helpers/emailOlvidePassword';
 
 
 
@@ -155,6 +155,13 @@ export const olvidePassword = async (req: Request, res: Response): Promise<void>
         }
         user.token = generarJWT(user.id);
         await user.save();
+
+
+        emailOlvidePassword({ email, nombre: user.name, token: user.token });
+
+
+
+
         res.json({ msg: 'Hemos enviado un email con las instrucciones' });
     } catch (error) {
         console.error(error);

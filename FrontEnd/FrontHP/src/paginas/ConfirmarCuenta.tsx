@@ -33,7 +33,7 @@ const ConfirmarCuenta = () => {
         });
       } catch (error: unknown) {
         if (error instanceof AxiosError && error.response) {
-          // No manejar el error de token no válido
+          // Manejar el error, asegurándose de no mostrar el mensaje de token no válido
           if (error.response.data.msg !== "Token no válido") {
             setAlerta({
               msg: error.response.data?.msg || "Error al confirmar la cuenta",

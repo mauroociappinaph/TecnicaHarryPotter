@@ -8,6 +8,7 @@ import CharacterId from "./paginas/CharacterId";
 import Registrar from "./paginas/Registrar";
 import ConfirmarCuenta from "./paginas/ConfirmarCuenta";
 import OlvidePassword from "./paginas/OlvidePassword";
+import NuevoPassword from "./paginas/NuevoPassword";
 //import { AuthProvider } from "./context/AuthProvider";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="registrar" element={<Registrar />} />
           <Route path="confirmar/:id" element={<ConfirmarCuenta />} />
           <Route path="olvide-password" element={<OlvidePassword />} />
+          <Route path="olvide-password/:token" element={<NuevoPassword />} />
           <Route path="characters" element={<Characters />} />
           <Route path="characters/:id" element={<CharacterId />} />
           <Route />
