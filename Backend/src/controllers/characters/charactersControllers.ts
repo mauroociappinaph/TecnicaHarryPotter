@@ -150,22 +150,31 @@ export const getCharacterById = async (req: Request, res: Response): Promise<voi
         res.status(500).json({ msg: 'Error interno del servidor al obtener el personaje' });
     }
 };
+
+
+
 export const deleteCharacter = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
+
     if (!id) {
         res.status(400).json({ msg: 'El id del personaje es obligatorio' });
         return;
     }
+
     try {
         const character = await Characters.findByIdAndDelete(id);
+
         if (!character) {
             res.status(404).json({ msg: 'Personaje no encontrado' });
             return;
         }
+
         res.json({ msg: 'Personaje eliminado correctamente' });
     } catch (error) {
         console.error('Error al eliminar el personaje:', error);
-        res.status(500).json({ msg: 'Error al eliminar el personaje' });
+        if (!res.headersSent) {  // Verifica si no se ha enviado una respuesta
+            res.status(500).json({ msg: 'Error al eliminar el personaje' });
+        }
     }
 };
 
