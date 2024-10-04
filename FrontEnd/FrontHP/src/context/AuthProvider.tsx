@@ -77,7 +77,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         msg: response.data.msg,
       };
     } catch (error: unknown) {
-      // Handle any errors
       console.error("Error actualizando perfil:", error);
       return {
         msg: "Error al actualizar el perfil",

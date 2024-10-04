@@ -65,7 +65,7 @@ const Formulario: React.FC = () => {
       }
 
       const data = await response.json();
-      return data.secure_url; // Devuelve la URL de la imagen
+      return data.secure_url;
     } catch (error) {
       console.error("Error al subir la imagen:", error);
       return null;
@@ -78,7 +78,7 @@ const Formulario: React.FC = () => {
     if (file !== null && file !== undefined) {
       setImageFile(file);
       try {
-        setPreviewImage(URL.createObjectURL(file)); // Crear una URL para previsualizar la imagen
+        setPreviewImage(URL.createObjectURL(file));
       } catch (error) {
         console.error("Error al previsualizar la imagen:", error);
       }
@@ -88,35 +88,29 @@ const Formulario: React.FC = () => {
     e.preventDefault();
 
     try {
-      // Validar el formulario
-      if (!name || !patronus || !species) {
+      if (!name) {
         setAlerta({
-          msg: "Todos los campos obligatorios deben ser completados",
+          msg: "El nombre del personaje es obligatorio.",
           error: true,
         });
         return;
       }
 
+      // Subir la imagen a Cloudinary (si se ha seleccionado una)
       const imageUrl = await uploadImageToCloudinary();
-      if (!imageUrl) {
-        setAlerta({
-          msg: "Error al subir la imagen",
-          error: true,
-        });
-        return;
-      }
 
+      // Crear el objeto del nuevo personaje
       const newCharacter: Character = {
         name,
-        role,
-        house,
-        species,
-        wizard,
-        patronus,
-        hogwartsStudent,
-        hogwartsStaff,
-        alive,
-        image: imageUrl,
+        role, // Opcional
+        house, // Opcional
+        species, // Opcional
+        wizard, // Opcional
+        patronus, // Opcional
+        hogwartsStudent, // Opcional
+        hogwartsStaff, // Opcional
+        alive, // Opcional
+        image: imageUrl || "", // Opcional, si no se selecciona una imagen, será una cadena vacía
       };
 
       // Realizar la petición POST
@@ -136,11 +130,11 @@ const Formulario: React.FC = () => {
 
       setAlerta({ msg: "Personaje creado correctamente", error: false });
 
-      // Resetear formulario
+      // Resetear el formulario
       setName("");
-      setRole("");
-      setHouse("");
-      setSpecies("");
+      setRole("Mago");
+      setHouse("Gryffindor");
+      setSpecies("Humano");
       setWizard(true);
       setPatronus("");
       setHogwartsStudent(true);
@@ -156,7 +150,6 @@ const Formulario: React.FC = () => {
       });
     }
   };
-
   const { msg } = alerta || {}; // Desestructurar msg
 
   const handleAliveChange = (value: string) => {
@@ -324,20 +317,39 @@ const Formulario: React.FC = () => {
           <label htmlFor="image" className="text-gray-700 uppercase font-bold">
             Imagen
           </label>
-          <input
-            id="image"
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-          />
-          {imageUploading && <p className="text-center">Subiendo imagen...</p>}
-          {previewImage && (
-            <img
-              src={previewImage}
-              alt="Preview"
-              className="mt-2 w-32 h-32 object-cover"
+
+          {!imageFile ? ( // Solo muestra el input si no hay imagen seleccionada
+            <input
+              id="image"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             />
+          ) : (
+            <div className="flex flex-col items-center">
+              <img
+                src={previewImage || ""}
+                alt="Preview"
+                className="mt-2 w-32 h-32 object-cover"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  setImageFile(null);
+                  setPreviewImage(null);
+                }}
+                className="mt-3 bg-indigo-600 text-white font-bold uppercase mx-10 p-3 rounded-md my-1"
+              >
+                Cambiar Imagen
+              </button>
+            </div>
+          )}
+
+          {imageUploading && (
+            <p className="text-center text-indigo-600 font-bold">
+              Subiendo imagen...
+            </p>
           )}
         </div>
 
