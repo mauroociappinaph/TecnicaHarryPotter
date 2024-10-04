@@ -8,13 +8,7 @@ import {
   PaginationPrevious,
 } from "../components/ui/pagination";
 import { useMemo } from "react";
-
-interface PaginadorProps {
-  itemsPerPage: number;
-  totalItems: number;
-  paginate: (pageNumber: number) => void;
-  currentPage: number;
-}
+import { PaginadorProps } from "../types/PaginadorPropsType";
 
 export default function Paginador({
   itemsPerPage,
