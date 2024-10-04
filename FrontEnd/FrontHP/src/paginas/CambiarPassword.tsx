@@ -59,15 +59,15 @@ const CambiarPassword: React.FC = () => {
   const { msg } = alerta;
 
   return (
-    <>
+    <div className="my-24">
       <AdminNav />
 
-      <h2 className="font-black text-3xl text-center mt-10">
+      <h2 className="font-black text-3xl text-center mt-10 text-white">
         Cambiar Contraseña
       </h2>
-      <p className="text-xl mt-5 mb-10 text-center">
+      <p className="text-xl mt-5 mb-10 text-center text-white">
         Modifica tu {""}
-        <span className="text-indigo-600 font-bold">Contraseña aquí</span>
+        <span className="text-yellow-400 font-bold">Contraseña aquí</span>
       </p>
 
       <div className="flex justify-center">
@@ -113,12 +113,12 @@ const CambiarPassword: React.FC = () => {
             <input
               type="submit"
               value="Actualizar Contraseña"
-              className="bg-indigo-700 px-10 py-3 font-bold text-white rounded-lg uppercase w-full mt-5"
+              className="bg-yellow-400 px-10 py-3 font-bold text-white rounded-lg uppercase w-full mt-5"
             />
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

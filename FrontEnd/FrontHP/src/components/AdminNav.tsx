@@ -8,7 +8,7 @@ const AdminNav = () => {
         <TabsTrigger value="perfil">
           <Link
             to="/admin/perfil"
-            className="font-bold uppercase text-gray-500 hover:text-indigo-700"
+            className="font-bold uppercase text-gray-500 hover:text-yellow-500"
           >
             Perfil
           </Link>
@@ -16,7 +16,7 @@ const AdminNav = () => {
         <TabsTrigger value="cambiar-password">
           <Link
             to="/admin/cambiar-password"
-            className="font-bold uppercase text-gray-500 hover:text-indigo-700"
+            className="font-bold uppercase text-gray-500 hover:text-yellow-500"
           >
             Cambiar Contraseña
           </Link>

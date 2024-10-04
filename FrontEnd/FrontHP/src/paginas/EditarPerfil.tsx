@@ -72,18 +72,20 @@ const EditarPerfil: React.FC = () => {
   const { msg = "", error = false } = alerta || {};
 
   return (
-    <>
+    <div className="my-24">
       <AdminNav />
 
-      <h2 className="font-black text-3xl text-center mt-10">Editar Perfil</h2>
-      <p className="text-xl mt-5 mb-10 text-center">
+      <h2 className="font-black text-3xl text-center mt-10 text-white ">
+        Editar Perfil
+      </h2>
+      <p className="text-xl mt-5 mb-10 text-center text-white">
         Modifica tu {""}
-        <span className="text-indigo-600 font-bold">Información aquí</span>
+        <span className="text-yellow-400 font-bold">Información aquí</span>
       </p>
-
       <div className="flex justify-center">
         <div className="w-full md:w-1/2 bg-white shadow rounded-lg p-5">
           {msg && <Alerta alerta={{ msg, error }} />}
+
           <form onSubmit={handleSubmit}>
             <div className="my-3">
               <label className="uppercase font-bold text-gray-600">
@@ -122,12 +124,12 @@ const EditarPerfil: React.FC = () => {
             <input
               type="submit"
               value="Guardar Cambios"
-              className="bg-indigo-700 px-10 py-3 font-bold text-white rounded-lg uppercase w-full mt-5"
+              className="bg-yellow-400 px-10 py-3 font-bold text-white rounded-lg uppercase w-full mt-5"
             />
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
