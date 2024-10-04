@@ -21,24 +21,11 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import { Checkbox } from "../components/ui/checkbox";
-
-interface Character {
-  _id: string;
-  name: string;
-  role: string;
-  house: string;
-  wizard: boolean;
-  species: string;
-  patronus: string;
-  alive: boolean;
-  hogwartsStudent: boolean;
-  hogwartsStaff: boolean;
-  image: string;
-}
+import { CharacterId } from "../types/CharacterId";
 
 interface ModalEditCharacterProps {
-  character: Character;
-  onUpdateCharacter: (updatedCharacter: Character) => void;
+  character: CharacterId;
+  onUpdateCharacter: (updatedCharacter: CharacterId) => void;
 }
 
 export function ModalEditCharacter({
@@ -46,7 +33,7 @@ export function ModalEditCharacter({
   onUpdateCharacter,
 }: ModalEditCharacterProps) {
   const { id } = useParams();
-  const [formData, setFormData] = useState<Character>(character);
+  const [formData, setFormData] = useState<CharacterId>(character);
   const [isOpen, setIsOpen] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUploading, setImageUploading] = useState(false);
@@ -59,7 +46,6 @@ export function ModalEditCharacter({
     });
   };
 
-  // Manejo del valor seleccionado en el Select de casas
   const handleHouseChange = (value: string) => {
     setFormData({
       ...formData,
@@ -106,7 +92,7 @@ export function ModalEditCharacter({
         }
       );
       const data = await response.json();
-      return data.secure_url; // Devolver la URL de la imagen
+      return data.secure_url;
     } catch (error) {
       console.error("Error al subir la imagen:", error);
       return null;
@@ -116,19 +102,18 @@ export function ModalEditCharacter({
   };
   const handlerEdit = async () => {
     let imageUrl: string | null = null;
+
     if (imageFile) {
       imageUrl = await uploadImageToCloudinary();
     }
 
-    try {
-      if (imageUrl) {
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          image: imageUrl,
-        }));
-      }
+    const updatedData = {
+      ...formData,
+      image: imageUrl || formData.image,
+    };
 
-      const response = await clienteAxios.put(`/characters/${id}`, formData);
+    try {
+      const response = await clienteAxios.put(`/characters/${id}`, updatedData);
       onUpdateCharacter(response.data);
       setIsOpen(false);
     } catch (error) {
