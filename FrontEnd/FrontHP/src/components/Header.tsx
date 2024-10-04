@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 const Header: React.FC = () => {
   const { cerrarSesion } = useAuth();
+  const location = useLocation();
 
   return (
     <header className="py-10 bg-indigo-600">
@@ -11,19 +12,39 @@ const Header: React.FC = () => {
           Harry Potter <span className="text-white font-black">API</span>
         </h1>
 
-        <nav className="flex flex-col items-center lg:flex-row gap-4 mt-5 lg:mt-0">
-          <Link to="/admin" className="text-white text-sm uppercase font-bold">
+        <nav
+          className="flex flex-col items-center lg:flex-row gap-4 mt-5 lg:mt-0"
+          role="navigation"
+          aria-label="Main Navigation"
+        >
+          <Link
+            to="/admin"
+            className={`text-white text-sm uppercase font-bold ${
+              location.pathname === "/admin" ? "border-b-2 border-white" : ""
+            }`}
+            aria-label="Ir a Inicio"
+          >
             Inicio
           </Link>
           <Link
             to="/admin/characters"
-            className="text-white text-sm uppercase font-bold"
+            className={`text-white text-sm uppercase font-bold ${
+              location.pathname === "/admin/characters"
+                ? "border-b-2 border-white"
+                : ""
+            }`}
+            aria-label="Ver Personajes"
           >
             Personajes
           </Link>
           <Link
             to="/admin/perfil"
-            className="text-white text-sm uppercase font-bold"
+            className={`text-white text-sm uppercase font-bold ${
+              location.pathname === "/admin/perfil"
+                ? "border-b-2 border-white"
+                : ""
+            }`}
+            aria-label="Ver Perfil"
           >
             Perfil
           </Link>
@@ -32,6 +53,7 @@ const Header: React.FC = () => {
             type="button"
             className="text-white text-sm uppercase font-bold"
             onClick={cerrarSesion}
+            aria-label="Cerrar Sesión"
           >
             Cerrar Sesión
           </button>
