@@ -1,7 +1,7 @@
 import Formulario from "../components/Formulario";
 import { useState } from "react";
 
-const AdministrarPacientes = () => {
+const AdministrarCharacters = () => {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
   return (
@@ -25,4 +25,4 @@ const AdministrarPacientes = () => {
   );
 };
 
-export default AdministrarPacientes;
+export default AdministrarCharacters;
