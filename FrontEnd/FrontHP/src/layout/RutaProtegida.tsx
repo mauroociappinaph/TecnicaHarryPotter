@@ -2,14 +2,12 @@ import { Outlet, Navigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import useAuth from "../hooks/useAuth";
+import Spinner from "../components/ui/spinner";
 
 const RutaProtegida = () => {
   const { auth, cargando } = useAuth();
 
-  if (cargando) return "cargando..."; // Muestra un loader o mensaje mientras se carga
-
-  console.log("Auth state:", auth); // Verifica el estado de auth
-  console.log("Loading state:", cargando); // Verifica si está cargando
+  if (cargando) return <Spinner />;
 
   return (
     <>
