@@ -11,6 +11,17 @@ import {
 import { Button } from "./ui/button";
 import { useParams } from "react-router-dom";
 import { ModalEditCharacter } from "../components/ModalEditCharacter";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../components/ui/alert-dialog";
 
 // Definición de la interfaz Character
 interface Character {
@@ -63,7 +74,7 @@ export default function CardId() {
   const handlerDelete = async () => {
     try {
       await clienteAxios.delete(`/characters/${id}`);
-      window.location.href = "/characters"; // Redirigir a la lista de personajes después de eliminar
+      window.location.href = "/admin/characters";
     } catch (error) {
       console.error("Error al eliminar el personaje:", error);
     }
@@ -262,12 +273,31 @@ export default function CardId() {
           character={character}
           onUpdateCharacter={handleUpdateCharacter}
         />
-        <Button
-          className="bg-destructive text-white px-6 py-3 rounded-full hover:bg-destructive-600 transition-transform transform hover:scale-105 shadow-lg"
-          onClick={handlerDelete}
-        >
-          Eliminar
-        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button className="bg-destructive text-white px-6 py-3 rounded-full hover:bg-destructive-600 transition-transform transform hover:scale-105 shadow-lg">
+              Eliminar
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Confirmar eliminación</AlertDialogTitle>
+              <AlertDialogDescription>
+                ¿Estás seguro de que deseas eliminar este personaje? Esta acción
+                no se puede deshacer.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-indigo-600 text-white"
+                onClick={handlerDelete}
+              >
+                Confirmar
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </CardFooter>
     </Card>
   );
