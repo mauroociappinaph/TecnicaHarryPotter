@@ -7,6 +7,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../components/ui/pagination";
+import { useMemo } from "react";
 
 interface PaginadorProps {
   itemsPerPage: number;
@@ -21,22 +22,24 @@ export default function Paginador({
   paginate,
   currentPage,
 }: PaginadorProps) {
-  const pageNumbers = [];
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const maxVisiblePages = 5; // Máximo de números visibles
+  const maxVisiblePages = 5;
 
-  let startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1);
-  const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
+  // Calcula el rango de páginas visibles usando useMemo
+  const pageNumbers = useMemo(() => {
+    const numbers = [];
+    let startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1);
+    const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
 
-  // Ajusta el rango de páginas si estamos cerca del final
-  if (endPage - startPage + 1 < maxVisiblePages) {
-    startPage = Math.max(endPage - maxVisiblePages + 1, 1);
-  }
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+    }
 
-  // Genera el rango de números de página
-  for (let i = startPage; i <= endPage; i++) {
-    pageNumbers.push(i);
-  }
+    for (let i = startPage; i <= endPage; i++) {
+      numbers.push(i);
+    }
+    return numbers;
+  }, [currentPage, maxVisiblePages, totalPages]);
 
   return (
     <Pagination>
@@ -52,7 +55,7 @@ export default function Paginador({
           )}
         </PaginationItem>
 
-        {startPage > 1 && (
+        {pageNumbers[0] > 1 && (
           <>
             <PaginationItem>
               <PaginationLink href="#" onClick={() => paginate(1)}>
@@ -70,16 +73,18 @@ export default function Paginador({
             <PaginationLink
               href="#"
               onClick={() => paginate(number)}
-              className={
-                currentPage === number ? "bg-indigo-500 text-white" : ""
-              }
+              className={`${
+                currentPage === number
+                  ? "bg-indigo-500 text-white font-bold"
+                  : ""
+              } px-3 py-1 rounded`}
             >
               {number}
             </PaginationLink>
           </PaginationItem>
         ))}
 
-        {endPage < totalPages && (
+        {pageNumbers[pageNumbers.length - 1] < totalPages && (
           <>
             <PaginationItem>
               <PaginationEllipsis />
