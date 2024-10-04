@@ -21,7 +21,7 @@ const characterSchema = new Schema<Character>({
     role: { type: String },
     house: { type: String },
     species: { type: String },
-    wizard: { type: Boolean, required: true },
+    wizard: { type: Boolean },
     patronus: { type: String },
     hogwartsStudent: { type: Boolean },
     hogwartsStaff: { type: Boolean },

@@ -45,20 +45,48 @@ export const getAllCharacters = async (req: Request, res: Response): Promise<voi
 export const createCharacter = async (req: Request, res: Response): Promise<void> => {
     try {
         const { name, role, house, species, wizard, patronus, hogwartsStudent, hogwartsStaff, alive, image } = req.body;
-        if (!name || !role || !house || !species || !wizard || !patronus || !hogwartsStudent || !hogwartsStaff || !alive || !image) {
-            res.status(400).json({ msg: 'Por favor, introduce todos los campos necesarios para crear un personaje.' });
+
+
+        if (!name) {
+            res.status(400).json({ msg: 'El nombre es obligatorio para crear un personaje.' });
             return;
         }
 
-        if (typeof wizard !== 'boolean' || typeof hogwartsStudent !== 'boolean' || typeof hogwartsStaff !== 'boolean' || typeof alive !== 'boolean') {
-            res.status(400).json({ msg: 'Los campos booleanos deben ser true o false.' });
+        // Verificar que los campos booleanos sean realmente booleanos si se proporcionan (opcional)
+        if (wizard !== undefined && typeof wizard !== 'boolean') {
+            res.status(400).json({ msg: 'El campo "wizard" debe ser true o false.' });
+            return;
+        }
+        if (hogwartsStudent !== undefined && typeof hogwartsStudent !== 'boolean') {
+            res.status(400).json({ msg: 'El campo "hogwartsStudent" debe ser true o false.' });
+            return;
+        }
+        if (hogwartsStaff !== undefined && typeof hogwartsStaff !== 'boolean') {
+            res.status(400).json({ msg: 'El campo "hogwartsStaff" debe ser true o false.' });
+            return;
+        }
+        if (alive !== undefined && typeof alive !== 'boolean') {
+            res.status(400).json({ msg: 'El campo "alive" debe ser true o false.' });
             return;
         }
 
 
+        const character = new Characters({
+            name,
+            role: role || "",
+            house: house || "",
+            species: species || "",
+            wizard: wizard || false,
+            patronus: patronus || "",
+            hogwartsStudent: hogwartsStudent || false,
+            hogwartsStaff: hogwartsStaff || false,
+            alive: alive || true,
+            image: image || "",
+        });
 
-        const character = new Characters({ name, role, house, species, wizard, patronus, hogwartsStudent, hogwartsStaff, alive, image });
+
         await character.save();
+
 
         res.status(201).json(character);
     } catch (error) {
@@ -66,7 +94,6 @@ export const createCharacter = async (req: Request, res: Response): Promise<void
         res.status(500).json({ msg: 'Error al crear el personaje' });
     }
 };
-
 
 
 
@@ -123,22 +150,31 @@ export const getCharacterById = async (req: Request, res: Response): Promise<voi
         res.status(500).json({ msg: 'Error interno del servidor al obtener el personaje' });
     }
 };
+
+
+
 export const deleteCharacter = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
+
     if (!id) {
         res.status(400).json({ msg: 'El id del personaje es obligatorio' });
         return;
     }
+
     try {
         const character = await Characters.findByIdAndDelete(id);
+
         if (!character) {
             res.status(404).json({ msg: 'Personaje no encontrado' });
             return;
         }
+
         res.json({ msg: 'Personaje eliminado correctamente' });
     } catch (error) {
         console.error('Error al eliminar el personaje:', error);
-        res.status(500).json({ msg: 'Error al eliminar el personaje' });
+        if (!res.headersSent) {  // Verifica si no se ha enviado una respuesta
+            res.status(500).json({ msg: 'Error al eliminar el personaje' });
+        }
     }
 };
 

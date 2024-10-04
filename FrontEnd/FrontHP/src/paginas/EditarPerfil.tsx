@@ -5,9 +5,9 @@ import Alerta from "../components/Alerta";
 import { AlertaType } from "../types/AlertType";
 
 interface Perfil {
-  _id?: string;
-  nombre?: string;
-  email?: string;
+  _id: string;
+  nombre: string;
+  email: string;
 }
 
 const EditarPerfil: React.FC = () => {
@@ -41,7 +41,13 @@ const EditarPerfil: React.FC = () => {
         );
       }
 
-      const resultado = await actualizarPerfil(perfil);
+      const perfilActualizado = {
+        ...perfil,
+        nombre: nombre || "", // Asegurar que el nombre no sea undefined
+        email: email || "",
+      };
+
+      const resultado = await actualizarPerfil(perfilActualizado);
       if (!resultado) {
         throw new Error("No se ha podido actualizar el perfil");
       }
