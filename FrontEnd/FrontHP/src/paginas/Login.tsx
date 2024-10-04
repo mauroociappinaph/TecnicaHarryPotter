@@ -10,61 +10,43 @@ const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [alerta, setAlerta] = useState<AlertaType | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { setAuth } = useAuth();
-
   const navigate = useNavigate();
-
-  console.log("Login component rendered");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("handleSubmit called");
 
     if (!email || !password) {
       setAlerta({
         msg: "Todos los campos son obligatorios",
         error: true,
       });
-      console.log("returning because of empty fields");
       return;
     }
 
+    setIsLoading(true);
+
     try {
-      console.log("making request to /user/login");
       const response = await clienteAxios.post("/user/login", {
         email,
         password,
       });
-
       const { data } = response;
-      if (!data) {
-        throw new Error("No se ha podido iniciar la sesión");
-      }
-
       const { token } = data;
-      if (!token) {
-        throw new Error("No se ha podido iniciar la sesión");
-      }
 
-      console.log("setting token in local storage");
       localStorage.setItem("token", token);
-      console.log(data);
       setAuth(data);
       navigate("/admin");
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        if (error.response?.data?.msg) {
-          setAlerta({
-            msg: error.response.data.msg,
-            error: true,
-          });
-        } else {
-          setAlerta({
-            msg: "Ha ocurrido un error, inténtelo de nuevo",
-            error: true,
-          });
-        }
+        setAlerta({
+          msg:
+            error.response?.data?.msg ||
+            "Ha ocurrido un error, inténtelo de nuevo",
+          error: true,
+        });
       } else if (error instanceof Error) {
         setAlerta({
           msg: error.message || "Ha ocurrido un error, inténtelo de nuevo",
@@ -76,6 +58,8 @@ const Login = () => {
           error: true,
         });
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -85,8 +69,7 @@ const Login = () => {
     <>
       <div>
         <h1 className="text-indigo-600 font-black text-6xl">
-          Iniciar {""}
-          <span className="text-black">Sesión</span>
+          Iniciar <span className="text-black">Sesión</span>
         </h1>
       </div>
 
@@ -95,35 +78,45 @@ const Login = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="my-5">
-            <label className="uppercase text-gray-600 block text-xl font-bold">
+            <label
+              htmlFor="email"
+              className="uppercase text-gray-600 block text-xl font-bold"
+            >
               Email
             </label>
             <input
               type="email"
+              id="email"
               placeholder="Email de Registro"
+              aria-label="Email de Registro"
               className="border w-full p-3 mt-3 bg-gray-50 rounded-xl"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="my-5">
-            <label className="uppercase text-gray-600 block text-xl font-bold">
+            <label
+              htmlFor="password"
+              className="uppercase text-gray-600 block text-xl font-bold"
+            >
               Password
             </label>
             <input
               type="password"
+              id="password"
               placeholder="Tu Password"
+              aria-label="Contraseña"
               className="border w-full p-3 mt-3 bg-gray-50 rounded-xl"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
-          <input
+          <button
             type="submit"
-            value="Iniciar Sesión"
-            className="bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold mt-5 hover:cursor-pointer hover:bg-indigo-800 md:w-auto"
-          />
+            className="bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold mt-5 hover:bg-indigo-800 md:w-auto flex items-center justify-center"
+            disabled={isLoading}
+          ></button>
         </form>
 
         <nav className="mt-10 lg:flex lg:justify-between">
@@ -137,7 +130,7 @@ const Login = () => {
             className="block text-center my-5 text-gray-500"
             to="/olvide-password"
           >
-            Olvide mi Password
+            Olvidé mi Password
           </Link>
         </nav>
       </div>
