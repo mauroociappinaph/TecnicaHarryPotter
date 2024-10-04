@@ -43,7 +43,10 @@ export default function Paginador({
             <PaginationPrevious
               href="#"
               onClick={() => paginate(currentPage - 1)}
-            />
+              className="text-white hover:bg-yellow-500 bg-yellow-400 px-3 py-1 rounded"
+            >
+              Anterior
+            </PaginationPrevious>
           ) : (
             <span className="text-gray-400 cursor-not-allowed">Anterior</span>
           )}
@@ -52,12 +55,16 @@ export default function Paginador({
         {pageNumbers[0] > 1 && (
           <>
             <PaginationItem>
-              <PaginationLink href="#" onClick={() => paginate(1)}>
+              <PaginationLink
+                href="#"
+                onClick={() => paginate(1)}
+                className="text-white"
+              >
                 1
               </PaginationLink>
             </PaginationItem>
             <PaginationItem>
-              <PaginationEllipsis />
+              <PaginationEllipsis className="text-white" />
             </PaginationItem>
           </>
         )}
@@ -69,8 +76,8 @@ export default function Paginador({
               onClick={() => paginate(number)}
               className={`${
                 currentPage === number
-                  ? "bg-indigo-500 text-white font-bold"
-                  : ""
+                  ? "bg-yellow-400 text-white font-bold"
+                  : "text-white"
               } px-3 py-1 rounded`}
             >
               {number}
@@ -81,10 +88,14 @@ export default function Paginador({
         {pageNumbers[pageNumbers.length - 1] < totalPages && (
           <>
             <PaginationItem>
-              <PaginationEllipsis />
+              <PaginationEllipsis className="text-white" />
             </PaginationItem>
             <PaginationItem>
-              <PaginationLink href="#" onClick={() => paginate(totalPages)}>
+              <PaginationLink
+                href="#"
+                onClick={() => paginate(totalPages)}
+                className="text-white"
+              >
                 {totalPages}
               </PaginationLink>
             </PaginationItem>
@@ -96,7 +107,10 @@ export default function Paginador({
             <PaginationNext
               href="#"
               onClick={() => paginate(currentPage + 1)}
-            />
+              className="text-white hover:bg-yellow-500 bg-yellow-400 px-3 py-1 rounded"
+            >
+              Siguiente
+            </PaginationNext>
           ) : (
             <span className="text-gray-400 cursor-not-allowed">Siguiente</span>
           )}
