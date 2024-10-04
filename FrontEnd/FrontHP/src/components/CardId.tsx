@@ -22,25 +22,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../components/ui/alert-dialog";
-
-// Definición de la interfaz Character
-interface Character {
-  _id: string;
-  name: string;
-  role: string;
-  house: string;
-  wizard: boolean;
-  species: string;
-  patronus: string;
-  alive: boolean;
-  hogwartsStudent: boolean;
-  hogwartsStaff: boolean;
-  image: string;
-}
+import { CharacterId } from "../types/CharacterId";
 
 export default function CardId() {
   const { id } = useParams();
-  const [character, setCharacter] = useState<Character | null>(null);
+  const [character, setCharacter] = useState<CharacterId | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -48,7 +34,7 @@ export default function CardId() {
       try {
         const response = await clienteAxios.get(`/characters/${id}`);
         console.log("Datos recibidos:", response.data); // Log para verificar los datos recibidos
-        setCharacter(response.data); // Almacena los datos del personaje
+        setCharacter(response.data);
       } catch (error) {
         console.error("Error al obtener los detalles del personaje:", error);
       } finally {
@@ -80,7 +66,7 @@ export default function CardId() {
     }
   };
 
-  const handleUpdateCharacter = (updatedCharacter: Character) => {
+  const handleUpdateCharacter = (updatedCharacter: CharacterId) => {
     setCharacter(updatedCharacter);
   };
 
