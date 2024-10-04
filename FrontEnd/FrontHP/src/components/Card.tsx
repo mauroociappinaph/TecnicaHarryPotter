@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import clienteAxios from "../config/axios";
 import {
   Card,
@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { Character } from "../types/Character";
 import { Search } from "../components/Search";
 import Spinner from "../components/ui/spinner";
+import { FaInfoCircle } from "react-icons/fa";
 
 export default function Cards() {
   const [characters, setCharacters] = useState<Character[]>([]);
@@ -27,7 +28,7 @@ export default function Cards() {
       try {
         const response = await clienteAxios.get("/characters");
         setCharacters(response.data);
-        setFilteredCharacters(response.data); // Inicializa los personajes filtrados
+        setFilteredCharacters(response.data);
       } catch (error) {
         console.error("Error al obtener los personajes:", error);
       } finally {
@@ -38,13 +39,14 @@ export default function Cards() {
     fetchCharacters();
   }, []);
 
-  // Lógica para paginar personajes
-  const indexOfLastCharacter = currentPage * itemsPerPage;
-  const indexOfFirstCharacter = indexOfLastCharacter - itemsPerPage;
-  const currentCharacters = filteredCharacters.slice(
-    indexOfFirstCharacter,
-    indexOfLastCharacter
-  );
+  const currentCharacters = useMemo(() => {
+    const indexOfLastCharacter = currentPage * itemsPerPage;
+    const indexOfFirstCharacter = indexOfLastCharacter - itemsPerPage;
+    return filteredCharacters.slice(
+      indexOfFirstCharacter,
+      indexOfLastCharacter
+    );
+  }, [currentPage, filteredCharacters, itemsPerPage]);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
@@ -98,7 +100,8 @@ export default function Cards() {
               </div>
             </CardContent>
             <Link to={`/admin/characters/${character._id}`}>
-              <Button className="w-1/2 mx-auto flex justify-center rounded-xl bg-indigo-700 py-3 px-5 text-white font-bold hover:bg-indigo-800 transition-colors duration-300 my-2">
+              <Button className="w-1/2 mx-auto flex justify-center items-center gap-2 rounded-xl bg-indigo-700 py-3 px-5 text-white font-bold hover:bg-indigo-800 transition-all duration-300 transform hover:scale-105 my-2">
+                <FaInfoCircle className="text-lg" />
                 Ver Información
               </Button>
             </Link>
