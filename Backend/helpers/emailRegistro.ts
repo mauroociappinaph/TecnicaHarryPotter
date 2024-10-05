@@ -22,10 +22,25 @@ const emailRegistro = async (datos: { email: string | null; nombre: string | nul
             to: datos.email,
             subject: "Comprueba tu cuenta",
             text: "Comprueba tu cuenta en Harry Potter",
-            html: `<p>Hola: ${datos.nombre}, comprueba tu cuenta en Harry Potter</p>
-                   <p>Tu cuenta ya está lista, solo debes comprobarla en el siguiente enlace:
-                   <a href="${process.env.FRONTEND_URL}/confirmar/${datos.token}">Comprobar Cuenta</a> </p>
-                   <p>Si tú no creaste esta cuenta, puedes ignorar este mensaje</p>
+            html: `<p style="font-size: 16px; color: #333; font-family: Arial, sans-serif; line-height: 1.5;">
+            Hola <strong style="color: #ffcc00;">${datos.nombre}</strong>,
+          </p>
+          
+          <p style="font-size: 16px; color: #333; font-family: Arial, sans-serif; line-height: 1.5;">
+            Tu cuenta en <span style="font-weight: bold; color: #ffcc00;">Harry Potter</span> ya está lista. 
+            Solo necesitas comprobarla haciendo clic en el siguiente enlace:
+          </p>
+          
+          <p style="font-size: 16px; text-align: center; margin: 20px 0;">
+            <a href="${process.env.FRONTEND_URL}/confirmar/${datos.token}" 
+               style="background-color: #ffcc00; color: #000; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-family: Arial, sans-serif;">
+              Comprobar Cuenta
+            </a>
+          </p>
+          
+          <p style="font-size: 14px; color: #666; font-family: Arial, sans-serif; line-height: 1.5;">
+            Si tú no creaste esta cuenta, puedes ignorar este mensaje.
+          </p>
             `,
         });
 
