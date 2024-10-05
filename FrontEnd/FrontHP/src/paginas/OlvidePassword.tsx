@@ -51,9 +51,9 @@ const OlvidePassword = () => {
   return (
     <>
       <div>
-        <h1 className="text-indigo-600 font-black text-6xl">
+        <h1 className="text-yellow-400 font-black text-6xl">
           Recupera tu{""}
-          <span className="text-black"> Acceso </span>
+          <span className="text-white"> Acceso </span>
         </h1>
       </div>
 
@@ -76,7 +76,7 @@ const OlvidePassword = () => {
           <input
             type="submit"
             value="Enviar Instrucciones"
-            className="bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold mt-5 hover:cursor-pointer hover:bg-indigo-800 md:w-auto "
+            className="bg-yellow-400 w-full py-3 px-10 rounded-xl text-white uppercase font-bold mt-5 hover:cursor-pointer hover:bg-yellow-500 md:w-auto "
           />
         </form>
 

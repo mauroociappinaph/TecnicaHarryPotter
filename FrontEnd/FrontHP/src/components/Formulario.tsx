@@ -102,18 +102,17 @@ const Formulario: React.FC = () => {
       // Crear el objeto del nuevo personaje
       const newCharacter: Character = {
         name,
-        role, // Opcional
-        house, // Opcional
-        species, // Opcional
-        wizard, // Opcional
-        patronus, // Opcional
-        hogwartsStudent, // Opcional
-        hogwartsStaff, // Opcional
-        alive, // Opcional
-        image: imageUrl || "", // Opcional, si no se selecciona una imagen, será una cadena vacía
+        role,
+        house,
+        species,
+        wizard,
+        patronus,
+        hogwartsStudent,
+        hogwartsStaff,
+        alive,
+        image: imageUrl || "",
       };
 
-      // Realizar la petición POST
       const response = await axios.post(
         "http://localhost:4000/api/characters/create-character",
         newCharacter,
@@ -130,11 +129,10 @@ const Formulario: React.FC = () => {
 
       setAlerta({ msg: "Personaje creado correctamente", error: false });
 
-      // Resetear el formulario
       setName("");
-      setRole("Mago");
-      setHouse("Gryffindor");
-      setSpecies("Humano");
+      setRole("");
+      setHouse("");
+      setSpecies("");
       setWizard(true);
       setPatronus("");
       setHogwartsStudent(true);
@@ -158,10 +156,6 @@ const Formulario: React.FC = () => {
 
   return (
     <>
-      <h2 className="font-black text-3xl text-center">
-        Crear Personaje de Harry Potter
-      </h2>
-
       <form
         className="bg-white py-10 px-5 mb-10 lg:mb-5 shadow-md rounded-md"
         onSubmit={handleSubmit}
@@ -318,7 +312,7 @@ const Formulario: React.FC = () => {
             Imagen
           </label>
 
-          {!imageFile ? ( // Solo muestra el input si no hay imagen seleccionada
+          {!imageFile ? (
             <input
               id="image"
               type="file"
@@ -339,15 +333,15 @@ const Formulario: React.FC = () => {
                   setImageFile(null);
                   setPreviewImage(null);
                 }}
-                className="mt-3 bg-indigo-600 text-white font-bold uppercase mx-10 p-3 rounded-md my-1"
+                className="mt-3 bg-yellow-400 text-white font-bold uppercase mx-10 p-3 rounded-md my-1"
               >
-                Cambiar Imagen
+                Quitar Imagen
               </button>
             </div>
           )}
 
           {imageUploading && (
-            <p className="text-center text-indigo-600 font-bold">
+            <p className="text-center text-yellow-400 font-bold">
               Subiendo imagen...
             </p>
           )}
@@ -355,7 +349,7 @@ const Formulario: React.FC = () => {
 
         <input
           type="submit"
-          className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
+          className="bg-yellow-400 w-full p-3 text-white uppercase font-bold hover:bg-yellow-500 cursor-pointer transition-colors"
           value="Crear Personaje"
         />
       </form>

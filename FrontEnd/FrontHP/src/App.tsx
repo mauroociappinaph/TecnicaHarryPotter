@@ -14,6 +14,8 @@ import AdministrarCharacters from "./paginas/AdministrarCharacters";
 import { AuthProvider } from "./context/AuthProvider";
 import EditarPerfil from "./paginas/EditarPerfil";
 import CambiarPassword from "./paginas/CambiarPassword";
+import Hero from "./paginas/Hero";
+import CrearPersonaje from "./paginas/CrearPersonaje";
 
 function App() {
   return (
@@ -21,7 +23,8 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<AuthLayout />}>
-            <Route index element={<Login />} />
+            <Route index element={<Hero />} />
+            <Route path="login" element={<Login />} />
             <Route path="registrar" element={<Registrar />} />
             <Route path="confirmar/:id" element={<ConfirmarCuenta />} />
             <Route path="olvide-password" element={<OlvidePassword />} />
@@ -33,6 +36,10 @@ function App() {
             <Route path="charactersAdmin" element={<AdministrarCharacters />} />
             <Route path="characters" element={<Characters />} />
             <Route path="characters/:id" element={<CharacterId />} />
+            <Route
+              path="characters/crearPersonaje"
+              element={<CrearPersonaje />}
+            />
             <Route path="perfil" element={<EditarPerfil />} />
             <Route path="cambiar-password" element={<CambiarPassword />} />
           </Route>

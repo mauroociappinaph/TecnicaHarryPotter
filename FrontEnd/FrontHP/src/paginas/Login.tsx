@@ -5,6 +5,7 @@ import Alerta from "../components/Alerta";
 import clienteAxios from "../config/axios";
 import { AlertaType } from "../types/AlertType";
 import useAuth from "../hooks/useAuth";
+import LogoHogwarts from "../asset/6137929c4b96600004f676fe.png"; // Importa la imagen correctamente
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -66,14 +67,20 @@ const Login = () => {
   const { msg } = alerta || {};
 
   return (
-    <>
-      <div>
-        <h1 className="text-indigo-600 font-black text-6xl">
-          Iniciar <span className="text-black">Sesión</span>
-        </h1>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center min-h-screen p-10">
+      <div className="hidden md:block">
+        <img
+          src={LogoHogwarts} // Usa la imagen importada
+          alt="Hogwarts Logo"
+          className="w-full h-full object-cover"
+        />
       </div>
 
-      <div className="mt-20 md:mt-5 shadow-lg px-5 py-10 rounded-xl bg-white">
+      <div className="bg-white p-10 rounded-xl shadow-lg">
+        <h1 className="text-yellow-400 font-black text-6xl text-center mb-6">
+          Iniciar Sesión
+        </h1>
+
         {msg && <Alerta alerta={alerta as AlertaType} />}
 
         <form onSubmit={handleSubmit}>
@@ -89,7 +96,7 @@ const Login = () => {
               id="email"
               placeholder="Email de Registro"
               aria-label="Email de Registro"
-              className="border w-full p-3 mt-3 bg-gray-50 rounded-xl"
+              className="border w-full p-3 mt-3 bg-gray-50 rounded-xl focus:outline-none focus:border-yellow-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -106,7 +113,7 @@ const Login = () => {
               id="password"
               placeholder="Tu Password"
               aria-label="Contraseña"
-              className="border w-full p-3 mt-3 bg-gray-50 rounded-xl"
+              className="border w-full p-3 mt-3 bg-gray-50 rounded-xl focus:outline-none focus:border-yellow-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -114,7 +121,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold mt-5 hover:bg-indigo-800 md:w-auto flex items-center justify-center"
+            className="bg-yellow-400 w-full py-3 px-10 rounded-xl text-white uppercase font-bold mt-5 hover:bg-yellow-500 md:w-auto flex items-center justify-center"
             disabled={isLoading}
           >
             Iniciar Sesión
@@ -136,7 +143,7 @@ const Login = () => {
           </Link>
         </nav>
       </div>
-    </>
+    </div>
   );
 };
 

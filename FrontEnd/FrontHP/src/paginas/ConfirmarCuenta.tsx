@@ -66,9 +66,9 @@ const ConfirmarCuenta = () => {
   return (
     <>
       <div>
-        <h1 className="text-indigo-600 font-black text-6xl">
+        <h1 className="text-yellow-400 font-black text-6xl">
           Confirma tu {""}
-          <span className="text-black">Cuenta</span>
+          <span className="text-white">Cuenta</span>
         </h1>
       </div>
 
