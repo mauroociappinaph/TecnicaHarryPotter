@@ -29,7 +29,7 @@ const emailRegistro = async (datos: { email: string | null; nombre: string | nul
             `,
         });
 
-        console.log("Mensaje enviado: %s", info.messageId);
+
     } catch (error: unknown) {
         if (error instanceof Error) {
 
