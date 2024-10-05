@@ -160,7 +160,6 @@ export function ModalEditCharacter({
             />
           </div>
 
-          {/* Select para Casa */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="house" className="text-right">
               Casa
@@ -219,7 +218,6 @@ export function ModalEditCharacter({
             />
           </div>
 
-          {/* Estado (Vivo, Muerto, Desconocido) */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="alive" className="text-right">
               Vivo
@@ -249,7 +247,6 @@ export function ModalEditCharacter({
           />
         </div>
 
-        {/* Personal de Hogwarts */}
         <div className="grid grid-cols-4 items-center gap-4">
           <Label className="text-right">Personal de Hogwarts</Label>
           <Checkbox
@@ -287,7 +284,7 @@ export function ModalEditCharacter({
         {imageUploading && <p className="text-center">Subiendo imagen...</p>}
         <DialogFooter>
           <Button
-            className="bg-indigo-600 text-white px-6 py-3 rounded-full hover:bg-indigo-700 transition-transform transform hover:scale-105 shadow-lg"
+            className="bg-yellow-400 text-white px-6 py-3 rounded-full hover:bg-yellow-500 transition-transform transform hover:scale-105 shadow-lg"
             onClick={handlerEdit}
           >
             Guardar Cambios

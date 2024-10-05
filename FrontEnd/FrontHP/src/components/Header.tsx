@@ -6,9 +6,9 @@ const Header: React.FC = () => {
   const location = useLocation();
 
   return (
-    <header className="py-10 bg-indigo-600">
+    <header className="py-10 bg-yellow-400">
       <div className="container mx-auto flex flex-col lg:flex-row justify-between items-center">
-        <h1 className="font-bold text-2xl text-indigo-200 text-center">
+        <h1 className="font-bold text-2xl text-yellow-800 text-center">
           Harry Potter <span className="text-white font-black">API</span>
         </h1>
 
@@ -29,13 +29,25 @@ const Header: React.FC = () => {
           <Link
             to="/admin/characters"
             className={`text-white text-sm uppercase font-bold ${
-              location.pathname === "/admin/characters"
+              location.pathname.startsWith("/admin/characters") &&
+              location.pathname !== "/admin/characters/crearPersonaje"
                 ? "border-b-2 border-white"
                 : ""
             }`}
             aria-label="Ver Personajes"
           >
             Personajes
+          </Link>
+          <Link
+            to="/admin/characters/crearPersonaje"
+            className={`text-white text-sm uppercase font-bold ${
+              location.pathname === "/admin/characters/crearPersonaje"
+                ? "border-b-2 border-white"
+                : ""
+            }`}
+            aria-label="Crear Personajes"
+          >
+            Crear Personaje
           </Link>
           <Link
             to="/admin/perfil"
