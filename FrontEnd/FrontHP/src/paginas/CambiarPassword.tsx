@@ -17,24 +17,6 @@ const CambiarPassword: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Verificar que todos los campos esten llenos
-    if (Object.values(password).some((campo) => campo === "")) {
-      setAlerta({
-        msg: "Todos los campos son obligatorios",
-        error: true,
-      });
-      return;
-    }
-
-    // Verificar la longitud del password
-    if (password.password_nuevo.length < 6) {
-      setAlerta({
-        msg: "El Password debe tener mínimo 6 caracteres",
-        error: true,
-      });
-      return;
-    }
-
     try {
       const respuesta = await guardarPassword(password);
       setAlerta({
