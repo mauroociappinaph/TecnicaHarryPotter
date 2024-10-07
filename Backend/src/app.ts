@@ -49,7 +49,7 @@ class Application {
                 },
                 servers: [
                     {
-                        url: process.env.FRONTEND_URL || ' http://localhost:5173',
+                        url: process.env.FRONTEND_URL,
                     },
                 ],
             },
