@@ -2,23 +2,14 @@ import { useState } from "react";
 import AdminNav from "../components/AdminNav";
 import Alerta from "../components/Alerta";
 import useAuth from "../hooks/useAuth";
-
-interface Password {
-  password_actual: string;
-  password_nuevo: string;
-}
-
-interface Alerta {
-  msg: string;
-  error: boolean;
-}
+import { AlertaType } from "../types/AlertType";
+import { PasswordType } from "../types/Password";
 
 const CambiarPassword: React.FC = () => {
   const { guardarPassword } = useAuth();
 
-  // Inicializar alerta con un valor por defecto
-  const [alerta, setAlerta] = useState<Alerta>({ msg: "", error: false });
-  const [password, setPassword] = useState<Password>({
+  const [alerta, setAlerta] = useState<AlertaType>({ msg: "", error: false });
+  const [password, setPassword] = useState<PasswordType>({
     password_actual: "",
     password_nuevo: "",
   });
