@@ -2,25 +2,16 @@ import { useState } from "react";
 import AdminNav from "../components/AdminNav";
 import Alerta from "../components/Alerta";
 import useAuth from "../hooks/useAuth";
-
-interface Password {
-  pwd_actual: string;
-  pwd_nuevo: string;
-}
-
-interface Alerta {
-  msg: string;
-  error: boolean;
-}
+import { AlertaType } from "../types/AlertType";
+import { PasswordType } from "../types/Password";
 
 const CambiarPassword: React.FC = () => {
   const { guardarPassword } = useAuth();
 
-  // Inicializar alerta con un valor por defecto
-  const [alerta, setAlerta] = useState<Alerta>({ msg: "", error: false });
-  const [password, setPassword] = useState<Password>({
-    pwd_actual: "",
-    pwd_nuevo: "",
+  const [alerta, setAlerta] = useState<AlertaType>({ msg: "", error: false });
+  const [password, setPassword] = useState<PasswordType>({
+    password_actual: "",
+    password_nuevo: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -36,7 +27,7 @@ const CambiarPassword: React.FC = () => {
     }
 
     // Verificar la longitud del password
-    if (password.pwd_nuevo.length < 6) {
+    if (password.password_nuevo.length < 6) {
       setAlerta({
         msg: "El Password debe tener mínimo 6 caracteres",
         error: true,
@@ -46,7 +37,10 @@ const CambiarPassword: React.FC = () => {
 
     try {
       const respuesta = await guardarPassword(password);
-      setAlerta(respuesta);
+      setAlerta({
+        msg: respuesta.msg,
+        error: false,
+      });
     } catch (error) {
       console.error("Error al cambiar la contraseña:", error);
       setAlerta({
