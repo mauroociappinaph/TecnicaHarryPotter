@@ -16,6 +16,7 @@ import EditarPerfil from "./paginas/EditarPerfil";
 import CambiarPassword from "./paginas/CambiarPassword";
 import Hero from "./paginas/Hero";
 import CrearPersonaje from "./paginas/CrearPersonaje";
+import BorrarCuenta from "./paginas/BorrarCuenta";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
             />
             <Route path="perfil" element={<EditarPerfil />} />
             <Route path="cambiar-password" element={<CambiarPassword />} />
+            <Route path="borrar-cuenta" element={<BorrarCuenta />} />
           </Route>
         </Routes>
       </AuthProvider>

@@ -55,7 +55,7 @@ const NuevoPassword = () => {
     };
 
     comprobarToken();
-  }, [token]); // Dependencia del useEffect
+  }, [token]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

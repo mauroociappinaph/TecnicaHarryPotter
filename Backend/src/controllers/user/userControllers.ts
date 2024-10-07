@@ -336,3 +336,26 @@ export const actualizarPassword = async (req: CustomRequest, res: Response): Pro
         }
     }
 };
+
+
+export const deleteUserAccount = async (req: CustomRequest, res: Response): Promise<void> => {
+    const { id } = req.user || {};
+    if (!id) {
+        res.status(400).json({ msg: 'No se ha proporcionado un ID de usuario' });
+        return;
+    }
+    try {
+        const user = await User.findById(id);
+
+        if (!user) {
+            res.status(404).json({ msg: 'Usuario no encontrado' });
+            return;
+        }
+        await User.findByIdAndDelete(id);
+
+        res.json({ msg: 'Cuenta de usuario eliminada correctamente' });
+    } catch (error) {
+        console.error('Error al eliminar la cuenta de usuario:', error);
+        res.status(500).json({ msg: 'Error al eliminar la cuenta de usuario' });
+    }
+};

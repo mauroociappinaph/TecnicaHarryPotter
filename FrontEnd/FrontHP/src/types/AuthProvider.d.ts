@@ -9,6 +9,7 @@ export interface AuthContextProps {
     guardarPassword: (
         datos: PasswordProps
     ) => Promise<{ msg: string; error?: boolean }>;
+    eliminarCuenta: (id: string) => Promise<{ msg: string; error?: boolean }>;
 }
 
 export interface AuthProps {

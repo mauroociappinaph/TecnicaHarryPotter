@@ -111,10 +111,47 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         msg: response.data.msg,
       };
     } catch (error: unknown) {
-      // Handle any errors
       console.error("Error guardando password:", error);
       return {
         msg: "Error al guardar el password",
+        error: true,
+      };
+    }
+  };
+
+  const eliminarCuenta = async (id: string) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setCargando(false);
+      return { msg: "No hay token", error: true };
+    }
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const url = `/user/delete/${id}`;
+      const response = await clienteAxios.delete(url, config);
+
+      if (!response.data) {
+        throw new Error("No se ha podido eliminar la cuenta");
+      }
+
+      localStorage.removeItem("token"); // Elimina el token del almacenamiento local
+      setAuth(null); // Actualiza el estado para cerrar sesión
+
+      return {
+        msg: "Cuenta eliminada correctamente",
+        error: false,
+      };
+    } catch (error: unknown) {
+      console.error("Error eliminando cuenta:", error);
+      return {
+        msg: "Error al eliminar la cuenta",
         error: true,
       };
     }
@@ -129,6 +166,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         cerrarSesion,
         actualizarPerfil,
         guardarPassword,
+        eliminarCuenta,
       }}
     >
       {children}

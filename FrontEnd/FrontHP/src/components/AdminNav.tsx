@@ -21,6 +21,14 @@ const AdminNav = () => {
             Cambiar Contraseña
           </Link>
         </TabsTrigger>
+        <TabsTrigger value="cambiar-password">
+          <Link
+            to="/admin/borrar-cuenta"
+            className="font-bold uppercase text-gray-500 hover:text-yellow-500"
+          >
+            Borrar Cuenta
+          </Link>
+        </TabsTrigger>
       </TabsList>
     </Tabs>
   );

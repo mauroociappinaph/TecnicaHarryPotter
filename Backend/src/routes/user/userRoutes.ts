@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { register, perfil, getAllUsers, confirmar, autenticar, olvidePassword, comprobarToken, nuevoPassword, actualizarPassword, actualizarPerfil } from '../../controllers/user/userControllers';
+import { register, perfil, getAllUsers, confirmar, autenticar, olvidePassword, comprobarToken, nuevoPassword, actualizarPassword, actualizarPerfil, deleteUserAccount } from '../../controllers/user/userControllers';
 import checkAuth from '../../../middleware/authMiddleware';
 
 
@@ -255,6 +255,31 @@ router.put("/perfil/:id", checkAuth, actualizarPerfil)
 *         description: Datos inválidos.
 */
 router.put("/actualizar-password", checkAuth, actualizarPassword);
+
+
+/**
+ * @swagger
+ * /api/user/delete/{id}:
+ *   delete:
+ *     tags: [Users]
+ *     summary: Eliminar cuenta
+ *     description: Elimina la cuenta del usuario autenticado.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del usuario a eliminar.
+ *         schema:
+ *           type: string
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Cuenta eliminada con èxito.
+ *       401:
+ *         description: No autorizado.
+ */
+router.delete("/delete/:id", checkAuth, deleteUserAccount)
 
 
 export default router

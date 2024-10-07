@@ -16,7 +16,6 @@ interface Alerta {
 const CambiarPassword: React.FC = () => {
   const { guardarPassword } = useAuth();
 
-  // Inicializar alerta con un valor por defecto
   const [alerta, setAlerta] = useState<Alerta>({ msg: "", error: false });
   const [password, setPassword] = useState<Password>({
     pwd_actual: "",
@@ -35,7 +34,6 @@ const CambiarPassword: React.FC = () => {
       return;
     }
 
-    // Verificar la longitud del password
     if (password.pwd_nuevo.length < 6) {
       setAlerta({
         msg: "El Password debe tener mínimo 6 caracteres",
@@ -46,7 +44,7 @@ const CambiarPassword: React.FC = () => {
 
     try {
       const respuesta = await guardarPassword(password);
-      setAlerta(respuesta);
+      setAlerta({ msg: respuesta.msg, error: false });
     } catch (error) {
       console.error("Error al cambiar la contraseña:", error);
       setAlerta({
