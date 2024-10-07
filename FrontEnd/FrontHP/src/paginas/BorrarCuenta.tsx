@@ -49,7 +49,7 @@ const DeleteAccount: React.FC = () => {
       console.error("Error al borrar la cuenta:", error);
       setAlerta({
         msg: "Hubo un error al intentar borrar la cuenta. Por favor, inténtalo de nuevo.",
-        error: true, // Debe ser un objeto con msg y error
+        error: true,
       });
     } finally {
       setIsDeleting(false);

@@ -3,11 +3,6 @@ import AdminNav from "../components/AdminNav";
 import Alerta from "../components/Alerta";
 import useAuth from "../hooks/useAuth";
 
-interface Password {
-  pwd_actual: string;
-  pwd_nuevo: string;
-}
-
 interface Alerta {
   msg: string;
   error: boolean;
@@ -17,15 +12,15 @@ const CambiarPassword: React.FC = () => {
   const { guardarPassword } = useAuth();
 
   const [alerta, setAlerta] = useState<Alerta>({ msg: "", error: false });
-  const [password, setPassword] = useState<Password>({
-    pwd_actual: "",
-    pwd_nuevo: "",
+  const [password, setPassword] = useState({
+    password_actual: "",
+    password_nuevo: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Verificar que todos los campos esten llenos
+    // Verificar que todos los campos estén llenos
     if (Object.values(password).some((campo) => campo === "")) {
       setAlerta({
         msg: "Todos los campos son obligatorios",
@@ -34,7 +29,7 @@ const CambiarPassword: React.FC = () => {
       return;
     }
 
-    if (password.pwd_nuevo.length < 6) {
+    if (password.password_nuevo.length < 6) {
       setAlerta({
         msg: "El Password debe tener mínimo 6 caracteres",
         error: true,
@@ -79,7 +74,7 @@ const CambiarPassword: React.FC = () => {
               <input
                 type="password"
                 className="border bg-gray-50 w-full p-2 mt-5 rounded-lg"
-                name="pwd_actual"
+                name="password_actual"
                 placeholder="Escribe tu contraseña actual"
                 onChange={(e) =>
                   setPassword({
@@ -97,7 +92,7 @@ const CambiarPassword: React.FC = () => {
               <input
                 type="password"
                 className="border bg-gray-50 w-full p-2 mt-5 rounded-lg"
-                name="pwd_nuevo"
+                name="password_nuevo"
                 placeholder="Escribe tu nueva contraseña"
                 onChange={(e) =>
                   setPassword({
