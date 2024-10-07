@@ -66,7 +66,7 @@ class Application {
                 },
                 servers: [
                     {
-                        url: 'http://localhost:4000',
+                        url: process.env.FRONTEND_URL,
                     },
                 ],
             },
